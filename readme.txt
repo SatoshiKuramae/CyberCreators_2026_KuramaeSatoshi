@@ -27,6 +27,11 @@ BGMはSuno AIを使用 https://suno.com
 開発環境
 ・Visual studio2019 DirectX C++
 
+
+動画URL
+https://youtu.be/63TNaQKGCxM
+
+
 履歴
 ・2024/07/19 作成開始
 ・2024/08/30 ゲームループを作成
