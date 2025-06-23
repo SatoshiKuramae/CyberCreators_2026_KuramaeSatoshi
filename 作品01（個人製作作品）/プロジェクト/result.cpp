@@ -75,11 +75,15 @@ void CResult::Update() {
 		m_pSound_Result->PlaySound(CSound::SOUND_LABEL_CLICK);
 		CManager::GetFade()->SetFade(CScene::MODE::MODE_TITLE);
 	}
+#ifdef DEBUG
+
 	if (pKeyboard->GetKeyboardTrigger(DIK_R) == true)
 	{
 		m_pSound_Result->PlaySound(CSound::SOUND_LABEL_CLICK);
 		CManager::GetFade()->SetFade(CScene::MODE::MODE_GAME);
 	}
+#endif // !DEBUG
+
 }
 
 //•`‰æˆ—

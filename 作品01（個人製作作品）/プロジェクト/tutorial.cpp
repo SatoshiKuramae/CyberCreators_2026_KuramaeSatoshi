@@ -17,13 +17,16 @@
 
 CSound* m_pSound_Tutorial = nullptr;
 
+//コンストラクタ
 CTutorial::CTutorial() {
 }
 
+//デストラクタ
 CTutorial::~CTutorial() {
 
 }
 
+//初期化
 HRESULT CTutorial::Init() {
 	m_pCamera = new CCamera();
 
@@ -57,6 +60,7 @@ HRESULT CTutorial::Init() {
 	return S_OK;
 }
 
+//終了処理
 void CTutorial::Uninit() {
 	m_pSound_Tutorial->StopSound();
 	if (m_pCamera != nullptr) {
@@ -74,17 +78,19 @@ void CTutorial::Uninit() {
 	m_pTutorialUI->Uninit();
 }
 
+//更新処理
 void CTutorial::Update() {
 
 	CInputKeyboard* pKeyboard = CManager::GetKeyboard();
 
+	
+#ifdef  DEBUG
 	if (pKeyboard->GetKeyboardTrigger(DIK_RETURN) == true)
 	{
 		m_pSound_Tutorial->PlaySound(CSound::SOUND_LABEL_CLICK);
 		CManager::GetFade()->SetFade(CScene::MODE::MODE_SELECT);
 
 	}
-#ifndef  DEBUG
 	if (pKeyboard->GetKeyboardTrigger(DIK_F2) == true)
 	{
 		CManager::GetFade()->SetFade(CScene::MODE::MODE_SELECT);
@@ -100,7 +106,7 @@ void CTutorial::Update() {
 	
 }
 
-
+//描画処理
 void CTutorial::Draw() {
 	m_PlayerManager->Draw();
 	m_pGauge->Draw();
@@ -108,6 +114,7 @@ void CTutorial::Draw() {
 	m_pTutorialUI->Draw();
 }
 
+//ステージ読み込み
 void CTutorial::TutorialLoad()
 {
 	//ブロックの生成とプレイヤーの生成

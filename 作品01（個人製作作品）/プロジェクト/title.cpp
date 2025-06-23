@@ -68,6 +68,8 @@ void CTitle::Uninit() {
 void CTitle::Update() {
 	CInputKeyboard* pKeyboard = CManager::GetKeyboard();
 	CInputGamepad* pJoypad = CManager::GetJoypad();
+	
+#ifdef DEBUG
 	if (pKeyboard->GetKeyboardTrigger(DIK_RETURN) == true || pJoypad->GetJoypadTrigger(CInputGamepad::JOYKEY_A) == true)
 	{
 		CManager::GetFade()->SetFade(CScene::MODE::MODE_TUTORIAL);
@@ -77,6 +79,9 @@ void CTitle::Update() {
 	{
 		CManager::GetFade()->SetFade(CScene::MODE::MODE_SELECT);
 	}
+#endif // !DEBUG
+
+	
 	
 	m_pCamera->SetCamera();
 	m_pCamera->Update();

@@ -17,7 +17,6 @@
 #include "bg.h"
 #include "item.h"
 
-
 bool meshuse;
 
 CGame* m_pTime = nullptr;
@@ -128,10 +127,14 @@ void CGame::Update() {
 
 	m_pNumplayer->Update();
 	m_pGauge->Update();
+#ifndef DEBUG
 	if (pKeyboard->GetKeyboardPress(DIK_P) == true)
 	{
 		CManager::GetFade()->SetFade(CScene::MODE::MODE_RESULT_CLEAR);
 	}
+#endif // !DEBUG
+
+	
 }
 void CGame::Draw() {
 	m_PlayerManager->Draw();
@@ -203,12 +206,10 @@ void CGame::LoadStage()
 			{
 				if (aString[i] == '0')
 				{
-					//pPlayer = CPlayer::Create(D3DXVECTOR3(i * BLOCKSIZE + STARTPOS, nScanData_Y * BLOCKSIZE + 50.0f, 0.0f), CPlayer::PLAYER_1);
 					m_PlayerManager->Create(CPlayerManager::TYPEPLAYER::PLAYER_1, D3DXVECTOR3(i * BLOCKSIZE + STARTPOS, nScanData_Y * BLOCKSIZE + 50.0f, 0.0f));
 				}
 				else if (aString[i] == '1')
 				{
-					//pPlayer = CPlayer::Create(D3DXVECTOR3(i * BLOCKSIZE + STARTPOS, nScanData_Y * BLOCKSIZE + 50.0f, 0.0f), CPlayer::PLAYER_2);
 					m_PlayerManager->Create(CPlayerManager::TYPEPLAYER::PLAYER_2, D3DXVECTOR3(i * BLOCKSIZE + STARTPOS, nScanData_Y * BLOCKSIZE + 50.0f, 0.0f));
 				}
 				else if (aString[i] == '2')

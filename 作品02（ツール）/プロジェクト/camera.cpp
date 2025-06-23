@@ -63,61 +63,7 @@ void CCamera::Update()
 	pDevice = CManager::GetRenderer()->GetDevice();
 	CInputKeyboard* pKeyboard = CManager::GetKeyboard();
 
-	// マウス座標を取得する
-	POINT currentPos;
-	static POINT prevPos = { 0, 0 };
-	GetCursorPos(&currentPos);
-
-	// スクリーン座標をクライアント座標に変換する
-	ScreenToClient(FindWindowA(CLASS_NAME, nullptr), &currentPos);
-
-	int deltaX = currentPos.x - prevPos.x; // 横の移動量
-	int deltaY = currentPos.y - prevPos.y; // 縦の移動量
-
-	prevPos = currentPos; // 次回のために現在位置を保存
-
-	if (GetAsyncKeyState(VK_RBUTTON) & 0x8000)
-	{
-		// 右クリックが押されている
-		if (m_rot.x < -1.25f)
-		{
-			m_rot.x = -1.25f;
-		}
-		if (m_rot.x > 1.25f)
-		{
-			m_rot.x = 1.25f;
-		}
-		if (deltaY > 0)
-		{
-			m_rot.x += 0.05f;
-
-			m_posV.y = sinf(m_rot.x + D3DX_PI) * sqrtf(m_TargetPosV.x * m_TargetPosV.x + m_TargetPosV.z * m_TargetPosV.z) / 2 + CCamera::m_posR.y;
-			m_posV.z = cosf(m_rot.x + D3DX_PI) * sqrtf(m_TargetPosV.x * m_TargetPosV.x + m_TargetPosV.z * m_TargetPosV.z) / 2 + CCamera::m_posR.y;
-		}
-		else if (deltaY < 0)
-		{
-			m_rot.x -= 0.05f;
-
-			m_posV.y = sinf(m_rot.x + D3DX_PI) * sqrtf(m_TargetPosV.x * m_TargetPosV.x + m_TargetPosV.z * m_TargetPosV.z) / 2 + CCamera::m_posR.y;
-			m_posV.z = cosf(m_rot.x + D3DX_PI) * sqrtf(m_TargetPosV.x * m_TargetPosV.x + m_TargetPosV.z * m_TargetPosV.z) / 2 + CCamera::m_posR.y;
-		}
-		/*if (deltaX > 0)
-		{
-			m_rot.y += 0.05f;
-
-			m_posV.x = sinf(m_rot.y + D3DX_PI) * sqrtf(m_TargetPosV.z * m_TargetPosV.z + m_TargetPosV.y * m_TargetPosV.y) / 2 + CCamera::m_posR.x;
-			m_posV.z = cosf(m_rot.y + D3DX_PI) * sqrtf(m_TargetPosV.z * m_TargetPosV.z + m_TargetPosV.y * m_TargetPosV.y) / 2 + CCamera::m_posR.x;
-		}
-		else if (deltaX < 0)
-		{
-			m_rot.y -= 0.05f;
-
-			m_posV.x = sinf(m_rot.y + D3DX_PI) * sqrtf(m_TargetPosV.z * m_TargetPosV.z + m_TargetPosV.y * m_TargetPosV.y) / 2 + CCamera::m_posR.x;
-			m_posV.z = cosf(m_rot.y + D3DX_PI) * sqrtf(m_TargetPosV.z * m_TargetPosV.z + m_TargetPosV.y * m_TargetPosV.y) / 2 + CCamera::m_posR.x;
-		}*/
-		
-		
-	}
+	
 
 
 	//posR=注視点posV=視点vecU=視点のベクトル
@@ -175,6 +121,7 @@ void CCamera::Update()
 	// 矢印キー入力で移動（カメラの向き基準で前後左右）
 	float moveSpeed = CAMERASPEED;
 
+	//外積！？なにそれおいしいの？勉強してきます
 
 	// カメラの注視ベクトル
 	D3DXVECTOR3 look = m_posR - m_posV;
