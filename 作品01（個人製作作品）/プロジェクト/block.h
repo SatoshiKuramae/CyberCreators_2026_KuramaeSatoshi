@@ -2,6 +2,7 @@
 //
 //block.h
 //
+//Author Kuramaesatoshi
 //============================================================
 #ifndef _CBlock_H_
 #define _CBlock_H_

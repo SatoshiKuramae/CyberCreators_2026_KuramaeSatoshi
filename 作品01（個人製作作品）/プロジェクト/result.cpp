@@ -2,6 +2,7 @@
 //
 // result.cpp
 // 
+//Author Kuramaesatoshi
 //===============================================================================
 #include "result.h"
 #include "main.h"

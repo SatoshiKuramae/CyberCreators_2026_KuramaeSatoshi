@@ -2,6 +2,7 @@
 //
 //explosion.h
 //
+//Author Kuramaesatoshi
 //=======================================================
 #ifndef _EXPLOSION_H_
 #define _EXPLOSION_H_

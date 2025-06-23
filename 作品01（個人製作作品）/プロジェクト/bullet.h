@@ -2,6 +2,7 @@
 //
 //bullet.h
 //
+//Author Kuramaesatoshi
 //=======================================================
 #ifndef _BULLET_H_
 #define _BULLET_H_

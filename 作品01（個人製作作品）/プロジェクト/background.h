@@ -1,7 +1,8 @@
 //============================================================
 //
-//floor.h
+//background.h
 //
+//Author Kuramaesatoshi
 //============================================================
 #ifndef _BACKGROUND_H_
 #define _BACKGROUND_H_

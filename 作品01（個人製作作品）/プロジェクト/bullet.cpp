@@ -2,6 +2,7 @@
 //
 // bullet.cpp
 //
+// Author:Satoshi Kuramae
 //==============================================================
 #include "bullet.h"
 #include "manager.h"

@@ -2,6 +2,7 @@
 //
 // objectX.cpp
 // 
+//Author Kuramaesatoshi
 //===============================================================================
 #include "main.h"
 #include "objectX.h"

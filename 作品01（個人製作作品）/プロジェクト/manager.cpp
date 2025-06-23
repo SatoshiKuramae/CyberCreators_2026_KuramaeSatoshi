@@ -2,6 +2,7 @@
 //
 // manager.cpp
 //
+//Author Kuramaesatoshi
 //==============================================================
 
 #include<Windows.h>

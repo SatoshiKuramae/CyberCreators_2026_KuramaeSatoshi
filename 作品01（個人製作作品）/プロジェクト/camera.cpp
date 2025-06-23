@@ -2,6 +2,7 @@
 //
 // camera.cpp
 // 
+// Author:Satoshi Kuramae
 //===============================================================================
 #include "camera.h"
 #include "manager.h"
@@ -13,6 +14,8 @@
 
 constexpr float  CAMERALENGTH_Y(2500.0f);
 constexpr float  CAMERALENGTH_Z(2500.0f);
+constexpr float  CAMERALENGTH_TITLE(1000.0f);
+constexpr float  POSV_INC_Y(200.0f);
 //コンストラクタ
 CCamera::CCamera()
 {
@@ -86,8 +89,10 @@ void CCamera::Update()
 	CInputKeyboard* pKeyboard = CManager::GetKeyboard();
 	CScene* pScene = nullptr;
 
+
 	//posR=注視点posV=視点vecU=視点のベクトル
 	//視点の移動
+#ifdef DEBUG
 	if (pKeyboard->GetKeyboardPress(DIK_X) == true)
 	{
 		m_rot.y += 0.1f;
@@ -163,64 +168,56 @@ void CCamera::Update()
 		m_posV.x -= CAMERASPEED;
 		m_posR.x -= CAMERASPEED;
 	}
+#endif // DEBUG
 
-
-
-	
-
-
-	
 	m_AveragePlayer_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
 	static D3DXVECTOR3 pos1, pos2;
 
-	
-	
-	
-		for (int i = 0; i < NUMOBJECT; i++)
+	for (int i = 0; i < NUMOBJECT; i++)
+	{
+		//オブジェクト取得
+		CObject* pObj = CObject::GetObject(i, 3);
+		if (pObj != nullptr)
 		{
-			//オブジェクト取得
-			CObject* pObj = CObject::GetObject(i, 3);
-			if (pObj != nullptr)
+			CPlayer* pPlayer = (CPlayer*)pObj;
+			pPlayer->GetPos();
+
+			m_posR.y = pPlayer->GetPos().y + 500.0f;
+			//種類の取得
+			CObject::TYPE type = pObj->GetType();
+
+			if (type == CObject::TYPE::PLAYER01)
 			{
-				CPlayer* pPlayer = (CPlayer*)pObj;
-				pPlayer->GetPos();
-
-				m_posR.y = pPlayer->GetPos().y + 500.0f;
-				//種類の取得
-				CObject::TYPE type = pObj->GetType();
-
-				if (type == CObject::TYPE::PLAYER01)
-				{
-					pos1 = pPlayer->GetPos();
-				}
-				else if (type == CObject::TYPE::PLAYER02)
-				{
-					pos2 = pPlayer->GetPos();
-				}
+				pos1 = pPlayer->GetPos();
+			}
+			else if (type == CObject::TYPE::PLAYER02)
+			{
+				pos2 = pPlayer->GetPos();
 			}
 		}
-		if (pScene->GetScene() == CScene::MODE_TITLE)
-		{
-			m_AveragePlayer_pos = pos1 + pos2;
-			m_AveragePlayer_pos /= 2;
-			m_posR.x = m_AveragePlayer_pos.x;
-			m_posR.y = m_AveragePlayer_pos.y;
-			m_posV.x = sinf(m_rot.y + D3DX_PI) * sqrtf(1000.0f * 1000.0f + 1000.0f * 1000.0f) / 2 +m_AveragePlayer_pos.x;
-			m_posV.z = cosf(m_rot.y + D3DX_PI) * sqrtf(1000.0f * 1000.0f + 1000.0f * 1000.0f) / 2 +m_AveragePlayer_pos.z;
-			m_posV.y = m_AveragePlayer_pos.y + 200.0f;
-		}
-		else
-		{
-			m_AveragePlayer_pos = pos1 + pos2;
-			m_AveragePlayer_pos /= 2;
-			m_posR.x = m_AveragePlayer_pos.x;
-			m_posR.y = m_AveragePlayer_pos.y;
-			m_posV.x = sinf(m_rot.y + D3DX_PI) * sqrtf(CAMERALENGTH_Y * CAMERALENGTH_Y + CAMERALENGTH_Z * CAMERALENGTH_Z) / 2 +m_AveragePlayer_pos.x;
-			m_posV.z = cosf(m_rot.y + D3DX_PI) * sqrtf(CAMERALENGTH_Y * CAMERALENGTH_Y + CAMERALENGTH_Z * CAMERALENGTH_Z) / 2 +m_AveragePlayer_pos.z;
-			m_posV.y = m_AveragePlayer_pos.y + 200.0f;
-		}
-		
+	}
+	if (pScene->GetScene() == CScene::MODE_TITLE)
+	{
+		m_AveragePlayer_pos = pos1 + pos2;
+		m_AveragePlayer_pos /= 2;
+		m_posR.x = m_AveragePlayer_pos.x;
+		m_posR.y = m_AveragePlayer_pos.y;
+		m_posV.x = sinf(m_rot.y + D3DX_PI) * sqrtf(CAMERALENGTH_TITLE * CAMERALENGTH_TITLE + CAMERALENGTH_TITLE * CAMERALENGTH_TITLE) / 2 +m_AveragePlayer_pos.x;
+		m_posV.z = cosf(m_rot.y + D3DX_PI) * sqrtf(CAMERALENGTH_TITLE * CAMERALENGTH_TITLE + CAMERALENGTH_TITLE * CAMERALENGTH_TITLE) / 2 +m_AveragePlayer_pos.z;
+		m_posV.y = m_AveragePlayer_pos.y + POSV_INC_Y;
+	}
+	else
+	{
+		m_AveragePlayer_pos = pos1 + pos2;
+		m_AveragePlayer_pos /= 2;
+		m_posR.x = m_AveragePlayer_pos.x;
+		m_posR.y = m_AveragePlayer_pos.y;
+		m_posV.x = sinf(m_rot.y + D3DX_PI) * sqrtf(CAMERALENGTH_Y * CAMERALENGTH_Y + CAMERALENGTH_Z * CAMERALENGTH_Z) / 2+m_AveragePlayer_pos.x;
+		m_posV.z = cosf(m_rot.y + D3DX_PI) * sqrtf(CAMERALENGTH_Y * CAMERALENGTH_Y + CAMERALENGTH_Z * CAMERALENGTH_Z) / 2+m_AveragePlayer_pos.z;
+		m_posV.y = m_AveragePlayer_pos.y + POSV_INC_Y;
+	}
+	
 	
 	
 }

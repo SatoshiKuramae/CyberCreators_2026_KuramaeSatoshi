@@ -2,6 +2,7 @@
 //
 // light.cpp
 // 
+// Author:Satoshi Kuramae
 //===============================================================================
 #include "light.h"
 #include "manager.h"

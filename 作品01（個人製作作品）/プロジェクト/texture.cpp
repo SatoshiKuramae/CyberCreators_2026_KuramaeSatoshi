@@ -2,6 +2,7 @@
 //
 // texture.cpp
 // 
+//Author Kuramaesatoshi
 //===============================================================================
 #include "texture.h"
 #include "manager.h"

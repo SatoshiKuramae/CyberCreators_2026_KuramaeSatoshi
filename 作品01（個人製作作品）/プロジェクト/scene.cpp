@@ -2,6 +2,7 @@
 //
 //scene.cpp
 // 
+//Author Kuramaesatoshi
 //===============================================================================
 #include "scene.h"
 #include "title.h"

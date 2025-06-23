@@ -2,6 +2,7 @@
 //
 // object3D.cpp
 // 
+//Author Kuramaesatoshi
 //===============================================================================
 #include "object3D.h"
 #include "main.h"

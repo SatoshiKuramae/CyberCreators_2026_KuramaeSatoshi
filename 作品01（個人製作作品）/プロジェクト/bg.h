@@ -2,6 +2,7 @@
 //
 //bg.h
 //
+//Author Kuramaesatoshi
 //============================================================
 #ifndef _CBG_H_
 #define _CBG_H_

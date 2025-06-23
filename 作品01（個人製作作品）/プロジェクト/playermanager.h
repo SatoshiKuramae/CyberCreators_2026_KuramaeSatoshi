@@ -1,3 +1,9 @@
+//============================================================
+//
+//playermanager.h
+//Author Kuramaesatoshi
+//============================================================
+
 #include "player.h"
 #include <vector>
 #include "GameProgress.h"

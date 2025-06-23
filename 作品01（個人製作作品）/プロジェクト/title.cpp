@@ -69,12 +69,14 @@ void CTitle::Update() {
 	CInputKeyboard* pKeyboard = CManager::GetKeyboard();
 	CInputGamepad* pJoypad = CManager::GetJoypad();
 	
-#ifdef DEBUG
 	if (pKeyboard->GetKeyboardTrigger(DIK_RETURN) == true || pJoypad->GetJoypadTrigger(CInputGamepad::JOYKEY_A) == true)
 	{
 		CManager::GetFade()->SetFade(CScene::MODE::MODE_TUTORIAL);
 		m_pSound_Title->PlaySound(CSound::SOUND_LABEL_CLICK);
 	}
+
+#ifdef DEBUG
+	
 	if (pKeyboard->GetKeyboardTrigger(DIK_F2) == true)
 	{
 		CManager::GetFade()->SetFade(CScene::MODE::MODE_SELECT);

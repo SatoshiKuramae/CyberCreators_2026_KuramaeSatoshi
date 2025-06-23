@@ -2,6 +2,7 @@
 //
 // stageselect.cpp
 // 
+//Author Kuramaesatoshi
 //===============================================================================
 #include "game.h"
 #include "stageselect.h"

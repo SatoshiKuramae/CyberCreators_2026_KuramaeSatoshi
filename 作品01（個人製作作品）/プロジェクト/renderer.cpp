@@ -2,6 +2,7 @@
 //
 // renderer.cpp
 //
+//Author Kuramaesatoshi
 //==============================================================
 
 #include "renderer.h"

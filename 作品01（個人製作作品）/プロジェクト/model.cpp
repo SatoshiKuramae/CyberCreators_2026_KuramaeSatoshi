@@ -2,6 +2,7 @@
 //
 // model.cpp
 // 
+//Author Kuramaesatoshi
 //===============================================================================
 #include "model.h"
 #include "manager.h"

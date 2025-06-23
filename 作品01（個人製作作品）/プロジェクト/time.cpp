@@ -3,7 +3,7 @@
 //
 //time.cpp
 //
-//
+//Author Kuramaesatoshi
 //=======================================================
 #include "time.h"
 #include "object.h"

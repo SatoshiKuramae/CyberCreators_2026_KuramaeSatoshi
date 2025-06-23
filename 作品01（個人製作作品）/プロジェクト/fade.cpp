@@ -9,9 +9,6 @@
 #include "game.h"
 #include "manager.h"
 #include "texture.h"
-//ƒ}ƒNƒ’è‹`
-
-
 
 CFade::FADE CFade::m_Fadestate = FADE_NONE;
 

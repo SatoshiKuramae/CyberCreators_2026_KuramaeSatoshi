@@ -1,4 +1,10 @@
-﻿#include "camera.h"
+﻿//===============================================================================
+//
+//camera.cpp
+//
+//Author Kuramaesatoshi
+//===============================================================================
+#include "camera.h"
 #include "manager.h"
 #include"input.h"
 #include "Player.h"

@@ -2,6 +2,7 @@
 //
 //input.cpp
 //
+// Author:Satoshi Kuramae
 //==============================================================
 #include "input.h"
 

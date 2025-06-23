@@ -2,6 +2,7 @@
 //
 //Item.cpp
 // 
+// Author:Satoshi Kuramae
 //===============================================================================
 #include "main.h"
 #include "objectX.h"

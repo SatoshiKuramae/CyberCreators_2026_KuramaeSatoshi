@@ -2,6 +2,7 @@
 //
 //object2D.cpp
 //
+//Author Kuramaesatoshi
 //============================================================
 #include "object2D.h"
 #include "main.h"

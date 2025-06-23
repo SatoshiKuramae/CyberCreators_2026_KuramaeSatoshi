@@ -1,9 +1,9 @@
 //=======================================================
 //
 //
-//time.cpp
+//CNumplayer.cpp
 //
-//
+//Author Kuramaesatoshi
 //=======================================================
 #include "numplayer.h"
 #include "object.h"

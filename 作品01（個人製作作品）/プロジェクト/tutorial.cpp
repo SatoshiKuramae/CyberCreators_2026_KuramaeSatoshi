@@ -2,6 +2,7 @@
 //
 // Tutorial.cpp
 // 
+//Author Kuramaesatoshi
 //===============================================================================
 #include "tutorial.h"
 #include "main.h"

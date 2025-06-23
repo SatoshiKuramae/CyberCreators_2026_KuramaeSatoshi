@@ -1,6 +1,7 @@
 //===============================================================================
 //
 // game.cpp
+// Author:Satoshi Kuramae
 // 
 //===============================================================================
 #include "game.h"
@@ -23,12 +24,17 @@ CGame* m_pTime = nullptr;
 CGame* m_pNumplayer = nullptr;
 CSound* m_pSound_Game = nullptr;
 
+//コンストラクタ
 CGame::CGame() {
 	m_bPouse = false;
 }
+
+//デストラクタ
 CGame::~CGame() {
 
 }
+
+//初期化処理
 HRESULT CGame::Init() {
 	meshuse = false;
 	m_bPouse = false;
@@ -40,7 +46,6 @@ HRESULT CGame::Init() {
 	}
 
 	m_pTime->Init();
-	
 
 	m_pCamera = new CCamera();
 	m_pCamera->Init();  // 各シーンごとに初期化
@@ -136,6 +141,7 @@ void CGame::Update() {
 
 	
 }
+
 void CGame::Draw() {
 	m_PlayerManager->Draw();
 	m_pGauge->Draw();
