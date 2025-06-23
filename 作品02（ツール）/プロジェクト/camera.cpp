@@ -175,7 +175,6 @@ void CCamera::Update()
 	// 矢印キー入力で移動（カメラの向き基準で前後左右）
 	float moveSpeed = CAMERASPEED;
 
-	//外積！？なにそれおいしいの？勉強してきます
 
 	// カメラの注視ベクトル
 	D3DXVECTOR3 look = m_posR - m_posV;
