@@ -11,6 +11,7 @@
 #include "imgui.h"
 #include <algorithm>
 #include <vector>
+
 //コンストラクタ
 CCamera::CCamera()
 {
@@ -29,8 +30,8 @@ HRESULT CCamera::Init()
 	m_TargetPosV.y = CAMERAPOS_V_Y;
 	m_TargetPosV.z = CAMERAPOS_V_Z;
 	m_flattery = false;
-	CCamera::m_posV = D3DXVECTOR3(0.0f, 200.0f, -600.0f);
-	CCamera::m_posR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	CCamera::m_posV = D3DXVECTOR3(0.0f, 0.0f, CAMERA_POSV_Y);
+	CCamera::m_posR = D3DXVECTOR3(0.0f, 0.0f, CAMERA_POSR_Y);
 	CCamera::m_vecU = D3DXVECTOR3(0.0f, 20.0f, 0.0f);
 	CCamera::m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	return S_OK;
@@ -62,6 +63,7 @@ void CCamera::SetCamera()
 	pDevice->SetTransform(D3DTS_VIEW, &m_mtxView);
 }
 
+
 //更新処理
 void CCamera::Update()
 {
@@ -69,11 +71,10 @@ void CCamera::Update()
 	pDevice = CManager::GetRenderer()->GetDevice();
 	CInputKeyboard* pKeyboard = CManager::GetKeyboard();
 
-	
-
 
 	//posR=注視点posV=視点vecU=視点のベクトル
 
+#ifdef DEBUG
 	// 注視点と視点の差
 	D3DXVECTOR3 offset = m_posV - m_posR;
 
@@ -100,8 +101,8 @@ void CCamera::Update()
 	}
 
 	// 回転後のカメラ位置を更新（XZ方向の円軌道）
-	m_posV.x = sinf(m_rot.y) * radius + m_posR.x;
-	m_posV.z = cosf(m_rot.y) * radius + m_posR.z;
+	m_posV.x = sinf(D3DX_PI - m_rot.y) * radius + m_posR.x;
+	m_posV.z = cosf(D3DX_PI - m_rot.y) * radius + m_posR.z;
 
 	//回転の補正
 	if (m_rot.y > D3DX_PI)
@@ -127,7 +128,7 @@ void CCamera::Update()
 	// 矢印キー入力で移動（カメラの向き基準で前後左右）
 	float moveSpeed = CAMERASPEED;
 
-	//外積！？なにそれおいしいの？勉強してきます
+
 
 	// カメラの注視ベクトル
 	D3DXVECTOR3 look = m_posR - m_posV;
@@ -158,19 +159,25 @@ void CCamera::Update()
 		m_posR -= right * moveSpeed;
 	}
 
-
 	ImGui::Begin(u8"カメラ位置\n");
 	ImGui::Text(u8"m_posR（注視点）{%0.3f,%0.3f,%0.3f}", m_posR.x, m_posR.y, m_posR.z);
 	ImGui::Text(u8"m_posV（視点）{%0.3f,%0.3f,%0.3f}", m_posV.x, m_posV.y, m_posV.z);
 
 	ImGui::DragFloat3(u8"m_posR:{X,Y,Z}", (float*)&m_posR, 0.1f);
 	ImGui::DragFloat3(u8"m_posV:{X,Y,Z}", (float*)&m_posV, 0.1f);
-	ImGui::End();
 
-	
+	if (ImGui::Button(u8"カメラの位置リセット"))
+	{
+		Init();
+	}
+
+	ImGui::End();
 
 	D3DXMatrixLookAtLH(&m_mtxView, &m_posV, &m_posR, &m_vecU);
 	pDevice->SetTransform(D3DTS_VIEW, &m_mtxView);
+#endif // DEBUG
+
+	
 }
 
 //マウス操作に対応させようとしてます
