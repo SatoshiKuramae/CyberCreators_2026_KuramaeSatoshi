@@ -1,0 +1,37 @@
+{
+    "Level": 1,
+    "Tag": "None",
+    "AnticipationFrame": 60,
+    "Objects": [
+        {
+            "ModelName": "Data\\Model\\SafeZone.x",
+            "Move": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Name": "SafeZone",
+            "Pos": [
+                80.5999984741211,
+                96.9000015258789,
+                0.0
+            ],
+            "Rot": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "SummonFrame": 0
+        }
+    ]
+}
