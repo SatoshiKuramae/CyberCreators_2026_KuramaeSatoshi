@@ -8,7 +8,7 @@
 #define _OBJECTX_H_
 #include "main.h"
 #include "object.h"
-#define NUM_TEXTURE (50)
+constexpr int NUM_TEXTURE(50);
 
 //オブジェクトXクラス
 class CObjectX : public CObject
@@ -22,7 +22,7 @@ public:
 	void Update() override;
 	void Draw() override;
 	void DrawOutline();
-	void Load();
+
 	void BindMesh(LPD3DXMESH pMesh, LPD3DXBUFFER pBuffMat, DWORD dwNumMat, D3DXMATERIAL* pMat, LPDIRECT3DTEXTURE9* pTexture);
 
 
