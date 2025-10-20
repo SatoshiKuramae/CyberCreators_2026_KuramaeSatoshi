@@ -46,7 +46,7 @@ void CItem::Uninit()
 //XVˆ—
 void CItem::Update()
 {
-	m_rot.y += 0.1f;
+	m_rot.y += ROTSPEED;
 	SetRot(m_rot);
 	CObjectX::Update();
 }

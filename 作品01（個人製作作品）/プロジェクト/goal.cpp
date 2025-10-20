@@ -48,11 +48,19 @@ void CGoal::Uninit()
 //更新処理
 void CGoal::Update()
 {
-	m_rotGoal.z+=0.08f;
-	m_rotGoal.y+=0.02f;
-	m_rotGoal.x+=0.05f;
+	//モデルを回転させる
+	m_rotGoal.x += 0.05f;
+	m_rotGoal.y += 0.02f;
+	m_rotGoal.z += 0.08f;
+
+	//fmodf(割られる数値,割る数値)=余り値
+
+	m_rotGoal.x = fmodf(m_rotGoal.x, m_fTWO_PI);
+	m_rotGoal.y = fmodf(m_rotGoal.y, m_fTWO_PI);
+	m_rotGoal.z = fmodf(m_rotGoal.z, m_fTWO_PI);
+
 	SetRot(m_rotGoal);
-	CInputKeyboard* pKeyboard = CManager::GetKeyboard();
+
 	D3DXVECTOR3 pos;
 	pos = GetPos();
 	Setpos(pos);
@@ -111,7 +119,6 @@ CGoal* CGoal::Create(D3DXVECTOR3 pos)
 	
 	pObject3D->BindMesh(m_pMesh_Goal, m_pBuffMat_Goal, m_dwNumMat_Goal, m_pMaterial_Goal, nullptr);
 	
-
-	pObject3D->SetScale(D3DXVECTOR3(1.5f, 1.5f, 1.5f));
+	pObject3D->SetScale(D3DXVECTOR3(1.0f, 1.0f, 1.0f));
 	return pObject3D;
 }

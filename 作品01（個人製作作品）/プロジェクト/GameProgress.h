@@ -2,6 +2,7 @@
 //
 //Gameprogress.h
 //Author Kuramaesatoshi
+// 
 //============================================================
 #pragma once
 

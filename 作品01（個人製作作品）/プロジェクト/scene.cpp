@@ -3,6 +3,8 @@
 //scene.cpp
 // 
 //Author Kuramaesatoshi
+// 
+// TODO ステージ読み込み処理を一つにまとめる、自機を生成するシーン専用のSceneクラスを制定する
 //===============================================================================
 #include "scene.h"
 #include "title.h"
@@ -10,33 +12,46 @@
 #include "result.h"
 #include "stageselect.h"
 #include "tutorial.h"
-CScene::MODE CScene::m_Mode = CScene::MODE_TITLE;
-CScene::CScene() {
 
-};
-CScene::~CScene() {
+CScene::MODE CScene::m_Mode = CScene::MODE_TITLE;
+
+//コンストラクタ
+CScene::CScene() 
+{
 
 }
 
-HRESULT CScene::Init() {
+//デストラクタ
+CScene::~CScene() 
+{
+
+}
+
+HRESULT CScene::Init() 
+{
 
 	return S_OK;
 }
 
-void CScene::Uninit() {
+//終了処理
+void CScene::Uninit() 
+{
 
 }
-
-void CScene::Update() {
+//更新処理
+void CScene::Update() 
+{
 
 }
-
-void CScene::Draw() {
+//描画処理
+void CScene::Draw()
+{
 
 }
 
 //生成
-CScene* CScene::Create(MODE mode) {
+CScene* CScene::Create(MODE mode) 
+{
 
 	CScene* pScene = nullptr;
 
@@ -67,6 +82,7 @@ CScene* CScene::Create(MODE mode) {
 	return pScene;
 }
 
+//シーン取得
 CScene::MODE CScene::GetScene()
 {
 	return m_Mode;

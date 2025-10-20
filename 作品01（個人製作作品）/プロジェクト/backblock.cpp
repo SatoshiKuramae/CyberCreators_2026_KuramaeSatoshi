@@ -30,7 +30,7 @@ HRESULT CBackBlock::Init()
 {
 	CObject::SetType(TYPE::BLOCK);
 	CBackBlock::Load();
-	//モデルテクスチャの読み込み
+
 	CObjectX::Init();
 
 
@@ -46,7 +46,6 @@ void CBackBlock::Uninit()
 //更新処理
 void CBackBlock::Update()
 {
-	CInputKeyboard* pKeyboard = CManager::GetKeyboard();
 	D3DXVECTOR3 pos;
 	pos = GetPos();
 	Setpos(pos);
@@ -65,7 +64,6 @@ HRESULT CBackBlock::Load()
 	LPDIRECT3DDEVICE9 pDevice;
 	pDevice = CManager::GetRenderer()->GetDevice();
 
-
 	//Xファイルの読み込み
 	D3DXLoadMeshFromX("data\\xfile\\backblock_01.x",
 		D3DXMESH_SYSTEMMEM, pDevice,
@@ -74,6 +72,7 @@ HRESULT CBackBlock::Load()
 		NULL,
 		&m_dwNumMat_BackBlock[BACKBLOCK_01],
 		&m_pMesh_BackBlock[BACKBLOCK_01]);
+
 	D3DXLoadMeshFromX("data\\xfile\\backblock_02.x",
 		D3DXMESH_SYSTEMMEM, pDevice,
 		NULL,
@@ -81,6 +80,7 @@ HRESULT CBackBlock::Load()
 		NULL,
 		&m_dwNumMat_BackBlock[BACKBLOCK_02],
 		&m_pMesh_BackBlock[BACKBLOCK_02]);
+
 	D3DXLoadMeshFromX("data\\xfile\\backblock_03.x",
 		D3DXMESH_SYSTEMMEM, pDevice,
 		NULL,
@@ -88,6 +88,7 @@ HRESULT CBackBlock::Load()
 		NULL,
 		&m_dwNumMat_BackBlock[BACKBLOCK_03],
 		&m_pMesh_BackBlock[BACKBLOCK_03]);
+
 	D3DXLoadMeshFromX("data\\xfile\\backblock_04.x",
 		D3DXMESH_SYSTEMMEM, pDevice,
 		NULL,

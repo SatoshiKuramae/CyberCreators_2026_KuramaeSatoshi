@@ -36,6 +36,10 @@ public:
 	static CObject* GetObject(int nIdx,int nPri);
 	TYPE GetType();
 	void SetType(TYPE type);
+	virtual D3DXVECTOR3 GetPos() const = 0;
+	virtual D3DXVECTOR3 GetSize() const = 0;
+	virtual TYPE GetType() const = 0;
+
 	static void ReleaseAll();	//全オブジェクトの解放
 	static void UpdateAll();	//全オブジェクトの更新
 	static void DrawAll();		//全オブジェクトの描画
@@ -48,6 +52,9 @@ private:
 	int m_nID;								//自分自身のID
 	int m_nPriority;						//描画優先度
 	TYPE m_type;							//オブジェクトタイプ
+
+	D3DXVECTOR3 m_Pos;
+	D3DXVECTOR3 m_Size;
 
 	//オブジェクト管理
 	static CObject* m_pTop;	//先頭のオブジェクトのポインタ

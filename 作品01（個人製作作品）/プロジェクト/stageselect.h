@@ -11,11 +11,13 @@
 #include "time.h"
 #include "bg.h"
 #define NUM_STAGE (5)
-#define STAGE01_TIME (68)
+#define STAGE01_TIME (30)
 #define STAGE02_TIME (30)
 #define STAGE03_TIME (45)
 #define STAGE04_TIME (70)
 #define STAGE05_TIME (40)
+
+
 class CStageselect : public CScene
 {
 	typedef enum
@@ -37,8 +39,10 @@ public:
 	void Uninit() override;
 	void Update() override;
 	void Draw() override;
+
 	static int GetStageSelect();
 	static int GetBestTime();
+
 private:
 	static int m_NowSelect;		//‘I‘ð‰æ–Ê‚Å‰½”Ô–Ú‚ª‘I‘ð‚³‚ê‚Ä‚é‚©—p
 	static int m_nBesttime;

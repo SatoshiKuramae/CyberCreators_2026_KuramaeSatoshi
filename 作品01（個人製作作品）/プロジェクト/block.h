@@ -11,6 +11,9 @@
 #define NUMTEXTURE (5)
 #define NUMBLOCKTYPE (5)
 #define JUMP_DEC (2.2f)		//重力
+constexpr float BLOCK_X(80.0f);
+constexpr float BLOCK_Y(80.0f);
+constexpr float BLOCK_Z(80.0f);
 
 //3Dオブジェクトクラス
 class CBlock : public CObjectX
@@ -40,12 +43,14 @@ public:
 	static CBlock* Create(D3DXVECTOR3 pos, BLOCKTYPE BlockType);
 	D3DXVECTOR3& GetPos() { return m_pos; }	//位置情報などを取得
 	D3DXVECTOR3& GetMove() { return m_move; }
+	D3DXVECTOR3 GetSize() const { return m_Size; }
 	void SetBlockType(BLOCKTYPE BlockType);
 	BLOCKTYPE GetBlockType();
 
 private:
 	D3DXMATRIX m_mtxWorld;
 	BLOCKTYPE m_BlockType;
+	D3DXVECTOR3 m_Size = { BLOCK_X, BLOCK_Y, BLOCK_Z };
 
 	static LPD3DXMESH m_pMesh_Block[TYPE_MAX];
 	static LPD3DXBUFFER m_pBuffMat_Block[TYPE_MAX];

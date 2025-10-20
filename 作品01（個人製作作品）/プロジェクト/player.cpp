@@ -4,7 +4,6 @@
 // 
 //Author Kuramaesatoshi
 //===============================================================================
-
 #include "objectX.h"
 #include "manager.h"
 #include "player.h"
@@ -16,7 +15,6 @@
 #include "effect_x.h"
 
 //静的メンバ初期化
-D3DXVECTOR3 CPlayer::m_PosOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 LPD3DXMESH CPlayer::m_pMesh_Player[PLAYER_MAX] = {};
 LPD3DXBUFFER CPlayer::m_pBuffMat_Player[PLAYER_MAX] = {};
 DWORD CPlayer::m_dwNumMat_Player[PLAYER_MAX] = {};
@@ -25,7 +23,8 @@ LPDIRECT3DTEXTURE9 CPlayer::m_pTexture_Player[NUM_TEXTURE] = {};
 CItem* m_pItem = nullptr;
 CSound* m_pSound_Player = nullptr;
 
-int CPlayer::m_Numplayer = 0;
+
+
 //コンストラクタ
 CPlayer::CPlayer()
 {
@@ -42,7 +41,6 @@ CPlayer::~CPlayer()
 //初期化処理
 HRESULT CPlayer::Init()
 {
-	/*CObject::SetType(TYPE::PLAYER);*/
 
 	m_PlayerState_Block = STATE_NOMALBLOCK;
 
@@ -53,7 +51,7 @@ HRESULT CPlayer::Init()
 	m_IsAbilityActive = false;
 	m_PowerupCnt = 0;
 	m_MagCnt = 0;
-	m_Numplayer = 0;
+
 	m_jumpPower = JUMP_INC;
 	CPlayer::Load();
 	CObjectX::Init();
@@ -158,10 +156,13 @@ void CPlayer::Playermove()
 	{
 		UpdateJump();
 	}
+
+	
 }
 
 //ジャンプ専用処理
-void CPlayer::UpdateJump() {
+void CPlayer::UpdateJump() 
+{
 	if (m_Jump == true) {
 		m_Jump = false;
 
@@ -173,310 +174,148 @@ void CPlayer::UpdateJump() {
 //描画処理
 void CPlayer::Draw()
 {
+	CObjectX::SetColor(m_color);
 	CObjectX::Draw();
 }
 
 //当たり判定（ｘ,y座標）
 D3DXVECTOR3 CPlayer::Collision(D3DXVECTOR3 pos)
 {
+
+	
+	//共通の矩形判定（自機の位置、サイズ）
 	for (int i = 0; i < NUMOBJECT; i++)
 	{
 		//オブジェクト取得
 		CObject* pObj = CObject::GetObject(i, 3);
-
 		if (pObj != nullptr)
 		{
 			//種類の取得
 			CObject::TYPE type = pObj->GetType();
 
-			//==========================================================
-			//ブロックとの判定
-			//==========================================================
+			if (pObj == this) continue;
+
 			if (type == CObject::TYPE::BLOCK)
 			{
 				CBlock* p3DBlock = (CBlock*)pObj;
-				p3DBlock->GetPos();
 				p3DBlock->GetBlockType();
-				//ブロックの上面と当たった時
-				if (pos.y - PLAYERCOLL <= p3DBlock->GetPos().y + BLOCK_Y
-					&& m_PosOld.y - PLAYERCOLL > p3DBlock->GetPos().y + BLOCK_Y
-					&& pos.x + PLAYERCOLL >= p3DBlock->GetPos().x - BLOCK_X
-					&& pos.x - PLAYERCOLL <= p3DBlock->GetPos().x + BLOCK_X
-					&& pos.z + PLAYERCOLL >= p3DBlock->GetPos().z - BLOCK_Y
-					&& pos.z - PLAYERCOLL <= p3DBlock->GetPos().z + BLOCK_Y)
+
+				//自機の情報　＋　判定を行いたい相手の情報
+				CCollisionDir dir_block = CCollision::CheckRectCollision(pos, GetSize(),p3DBlock->GetPos(), p3DBlock->GetSize());
+
+				// 衝突している場合
+				if (dir_block != CCollisionDir::NONE)
 				{
-					
-					m_Jump = true;
-
-					if (p3DBlock->GetBlockType() == CBlock::TYPE_NOMALBLOCK)
+					switch (dir_block)
 					{
-						m_PlayerState_Block = STATE_NOMALBLOCK;
+					case CCollisionDir::TOP:
+						m_Jump = true;
 						m_move.y = 0.0f;
 						pos.y = p3DBlock->GetPos().y + RESETPOS;
+	 
+						// ブロックの種類による追加処理（触れているブロックを設定する）
+						switch (p3DBlock->GetBlockType())
+						{
+						case CBlock::BLOCKTYPE::TYPE_NOMALBLOCK:
+							m_PlayerState_Block = STATE_NOMALBLOCK;
+							break;
+						case CBlock::BLOCKTYPE::TYPE_N_BLOCK:
+							m_PlayerState_Block = STATE_N_BLOCK;
+							break;
+						case CBlock::BLOCKTYPE::TYPE_S_BLOCK:
+							m_PlayerState_Block = STATE_S_BLOCK;
+							break;
+						case CBlock::BLOCKTYPE::TYPE_MOVE_BLOCK_L:
+							m_PlayerState_Block = STATE_MOVEBLOCK_L;
+							pos.x += p3DBlock->GetMove().x;
+							break;
+						case CBlock::BLOCKTYPE::TYPE_MOVE_BLOCK_R:
+							m_PlayerState_Block = STATE_MOVEBLOCK_R;
+							pos.x += p3DBlock->GetMove().x;
+						break;
 					}
-					else if (p3DBlock->GetBlockType() == CBlock::TYPE_MOVE_BLOCK_R)
-					{
-						m_PlayerState_Block = STATE_MOVEBLOCK_R;
+						break;
+					case CCollisionDir::BOTTOM:
 						m_move.y = 0.0f;
-						pos.y = p3DBlock->GetPos().y + RESETPOS;
-						pos.x += p3DBlock->GetMove().x;
+						pos.y = p3DBlock->GetPos().y - RESETPOS;
+						break;
+					case CCollisionDir::LEFT:
+						m_move.x = 0.0f;
+						pos.x = p3DBlock->GetPos().x + RESETPOS;
+						break;
+					case CCollisionDir::RIGHT:
+						m_move.x = 0.0f;
+						pos.x = p3DBlock->GetPos().x - RESETPOS;
+						break;
 					}
-					else if (p3DBlock->GetBlockType() == CBlock::TYPE_MOVE_BLOCK_L)
-					{
-						m_PlayerState_Block = STATE_MOVEBLOCK_L;
-						m_move.y = 0.0f;
-						pos.y = p3DBlock->GetPos().y + RESETPOS;
-						pos.x += p3DBlock->GetMove().x;
-					}
-					//N極ブロックに触った時
-					else if (p3DBlock->GetBlockType() == CBlock::TYPE_N_BLOCK)
-					{
-						m_PlayerState_Block = STATE_N_BLOCK;
-						m_move.y = 0.0f;
-						pos.y = p3DBlock->GetPos().y + RESETPOS;
-					}
-					else if (p3DBlock->GetBlockType() == CBlock::TYPE_S_BLOCK)
-					{
-						m_PlayerState_Block = STATE_S_BLOCK;
-						m_move.y = 0.0f;
-						pos.y = p3DBlock->GetPos().y + RESETPOS;
-					}
-					
 				}
-
-				//ブロックの下面に当たった時
-				if (pos.y + PLAYERCOLL >= p3DBlock->GetPos().y - BLOCK_Y
-					&& m_PosOld.y + PLAYERCOLL < p3DBlock->GetPos().y - BLOCK_X
-					&& pos.x + PLAYERCOLL >= p3DBlock->GetPos().x - BLOCK_X
-					&& pos.x - PLAYERCOLL <= p3DBlock->GetPos().x + BLOCK_X
-					&& pos.z + PLAYERCOLL >= p3DBlock->GetPos().z - BLOCK_Y
-					&& pos.z - PLAYERCOLL <= p3DBlock->GetPos().z + BLOCK_Y)
-				{
-					m_move.y = 0.0f;
-					pos.y = p3DBlock->GetPos().y - RESETPOS;
-				}
-				//ブロックの右面と当たった時
-				if (pos.z + PLAYERCOLL >= p3DBlock->GetPos().z - BLOCK_Y
-					&& pos.z - PLAYERCOLL <= p3DBlock->GetPos().z + BLOCK_Y
-					&& m_PosOld.x - PLAYERCOLL > p3DBlock->GetPos().x - BLOCK_X
-					&& pos.x - PLAYERCOLL <= p3DBlock->GetPos().x + BLOCK_X
-					&& pos.y + PLAYERCOLL >= p3DBlock->GetPos().y - BLOCK_Y
-					&& pos.y - PLAYERCOLL <= p3DBlock->GetPos().y + BLOCK_Y)
-				{
-					m_move.x = 0.0f;
-					pos.x = p3DBlock->GetPos().x + RESETPOS;
-				}
-
-				//ブロックの左面と当たった時
-				if (pos.z + PLAYERCOLL >= p3DBlock->GetPos().z - BLOCK_Y
-					&& pos.z - PLAYERCOLL <= p3DBlock->GetPos().z + BLOCK_Y
-					&& m_PosOld.x + PLAYERCOLL < p3DBlock->GetPos().x + BLOCK_X
-					&& pos.x + PLAYERCOLL >= p3DBlock->GetPos().x - BLOCK_X
-					&& pos.y + PLAYERCOLL >= p3DBlock->GetPos().y - BLOCK_Y
-					&& pos.y - PLAYERCOLL <= p3DBlock->GetPos().y + BLOCK_Y)
-				{
-					m_move.x = 0.0f;
-					pos.x = p3DBlock->GetPos().x - RESETPOS;
-				}
-
-				//Z軸の判定は必要ないのでコメントアウト
-				////ブロックの奥面と当たった時
-				//if (pos.z + PLAYERCOLL >= p3DBlock->GetPos().z - BLOCK_Y
-				//	&& m_PosOld.z - PLAYERCOLL <= p3DBlock->GetPos().z + BLOCK_Y
-				//	&& pos.x +PLAYERCOLL >= p3DBlock->GetPos().x - BLOCK_X
-				//	&& pos.x -PLAYERCOLL <= p3DBlock->GetPos().x + BLOCK_X
-				//	&& pos.y +PLAYERCOLL >= p3DBlock->GetPos().y - BLOCK_Y
-				//	&& pos.y -PLAYERCOLL <= p3DBlock->GetPos().y + BLOCK_Y)
-				//{
-				//	m_move.z = 0.0f;
-				//	pos.z = p3DBlock->GetPos().z - RESETPOS;
-				//}
-
-				////ブロックの手前と当たった時
-				//if (pos.z - PLAYERCOLL <= p3DBlock->GetPos().z + BLOCK_Y
-				//	&& m_PosOld.z + PLAYERCOLL >= p3DBlock->GetPos().z - BLOCK_X
-				//	&& pos.x + PLAYERCOLL >= p3DBlock->GetPos().x - BLOCK_X
-				//	&& pos.x - PLAYERCOLL <= p3DBlock->GetPos().x + BLOCK_X
-				//	&& pos.y + PLAYERCOLL >= p3DBlock->GetPos().y - BLOCK_Y
-				//	&& pos.y - PLAYERCOLL <= p3DBlock->GetPos().y + BLOCK_Y)
-				//{
-				//	m_move.z = 0.0f;
-				//	pos.z = p3DBlock->GetPos().z + RESETPOS;
-				//}
 			}
-			//プレイヤー同士の衝突
+			//プレイヤー同士の判定
 			if (type == CObject::TYPE::PLAYER01 || type == CObject::TYPE::PLAYER02)
 			{
 				CPlayer* pPlayer = (CPlayer*)pObj;
-				pPlayer->GetPos();
+				
+				CCollisionDir dir_player = CCollision::CheckRectCollision(pos, pPlayer->GetSize(), pPlayer->GetPos(), pPlayer->GetSize());
 
-				//上
-				if (pos.y - PLAYERCOLL <= pPlayer->GetPos().y + PLAYERCOLL
-					&& m_PosOld.y - PLAYERCOLL > pPlayer->GetPos().y + PLAYERCOLL
-					&& pos.x + PLAYERCOLL >= pPlayer->GetPos().x - PLAYERCOLL
-					&& pos.x - PLAYERCOLL <= pPlayer->GetPos().x + PLAYERCOLL
-					&& pos.z + PLAYERCOLL >= pPlayer->GetPos().z - PLAYERCOLL
-					&& pos.z - PLAYERCOLL <= pPlayer->GetPos().z + PLAYERCOLL)
+				// 衝突している場合
+				if (dir_player != CCollisionDir::NONE)
 				{
-					m_Jump = true;
-					m_move.y = 0.0f;
-					pos.y = pPlayer->GetPos().y + (PLAYERCOLL * 2) + 1.0f;
-				}
-				//プレイヤーの下面に当たった時
-				if (pos.y + PLAYERCOLL >= pPlayer->GetPos().y - PLAYERCOLL
-					&& m_PosOld.y + PLAYERCOLL < pPlayer->GetPos().y - PLAYERCOLL
-					&& pos.x + PLAYERCOLL >= pPlayer->GetPos().x - PLAYERCOLL
-					&& pos.x - PLAYERCOLL <= pPlayer->GetPos().x + PLAYERCOLL
-					&& pos.z + PLAYERCOLL >= pPlayer->GetPos().z - PLAYERCOLL
-					&& pos.z - PLAYERCOLL <= pPlayer->GetPos().z + PLAYERCOLL)
-				{
-					m_move.y = 0.0f;
-					pos.y = pPlayer->GetPos().y - (PLAYERCOLL * 2) + 1.0f;
-				}
-				//プレイヤーの右面と当たった時
-				if (pos.z + PLAYERCOLL >= pPlayer->GetPos().z - PLAYERCOLL
-					&& pos.z - PLAYERCOLL <= pPlayer->GetPos().z + PLAYERCOLL
-					&& m_PosOld.x - PLAYERCOLL > pPlayer->GetPos().x + PLAYERCOLL
-					&& pos.x - PLAYERCOLL <= pPlayer->GetPos().x + PLAYERCOLL
-					&& pos.y + PLAYERCOLL >= pPlayer->GetPos().y - PLAYERCOLL
-					&& pos.y - PLAYERCOLL <= pPlayer->GetPos().y + PLAYERCOLL)
-				{
-					m_move.x = 0.0f;
-					pos.x = pPlayer->GetPos().x + (PLAYERCOLL * 2) + 2.0f;
-				}
-
-				//プレイヤーの左面と当たった時
-				if (pos.z + PLAYERCOLL >= pPlayer->GetPos().z - PLAYERCOLL
-					&& pos.z - PLAYERCOLL <= pPlayer->GetPos().z - PLAYERCOLL
-					&& m_PosOld.x + PLAYERCOLL < pPlayer->GetPos().x + PLAYERCOLL
-					&& pos.x + PLAYERCOLL >= pPlayer->GetPos().x - PLAYERCOLL
-					&& pos.y + PLAYERCOLL >= pPlayer->GetPos().y - PLAYERCOLL
-					&& pos.y - PLAYERCOLL <= pPlayer->GetPos().y + PLAYERCOLL)
-				{
-					m_move.x = 0.0f;
-					pos.x = pPlayer->GetPos().x - (PLAYERCOLL * 2) - 2.0f;
+					switch (dir_player)
+					{
+					case CCollisionDir::TOP:
+						m_Jump = true;
+						m_move.y = 0.0f;
+						pos.y = pPlayer->GetPos().y + (PLAYERCOLL * 2) + 1.0f;
+						break;
+					case CCollisionDir::BOTTOM:
+						m_move.y = 0.0f;
+						pos.y = pPlayer->GetPos().y - (PLAYERCOLL * 2) + 1.0f;
+						break;
+					case CCollisionDir::LEFT:
+						m_move.x = 0.0f;
+						pos.x = pPlayer->GetPos().x + (PLAYERCOLL * 2) + 2.0f;
+						break;
+					case CCollisionDir::RIGHT:
+						m_move.x = 0.0f;
+						pos.x = pPlayer->GetPos().x - (PLAYERCOLL * 2) - 2.0f;
+						break;
+					}
 				}
 			}
-			//ゴールに触れた時
+			//ゴールとの判定
 			else if (type == CObject::TYPE::GOAL)
 			{
-				CGoal* c3DGoal = (CGoal*)pObj;
-				c3DGoal->GetPos();
-
-				//ゴールの上に当たった時
-				if (pos.y - PLAYERCOLL <= c3DGoal->GetPos().y + PLAYERCOLL
-					&& m_PosOld.y - PLAYERCOLL > c3DGoal->GetPos().y + PLAYERCOLL
-					&& pos.x + PLAYERCOLL >= c3DGoal->GetPos().x - PLAYERCOLL
-					&& pos.x - PLAYERCOLL <= c3DGoal->GetPos().x + PLAYERCOLL
-					&& pos.z + PLAYERCOLL >= c3DGoal->GetPos().z - PLAYERCOLL
-					&& pos.z - PLAYERCOLL <= c3DGoal->GetPos().z + PLAYERCOLL)
+				CGoal* p3DGoal = (CGoal*)pObj;
+				
+				CCollisionDir dir_goal = CCollision::CheckRectCollision(pos, GetSize(), p3DGoal->GetPos(), p3DGoal->GetSize());
+				if (dir_goal != CCollisionDir::NONE)
 				{
+					//ゴールした瞬間ゲームクリアなので方向は関係なし
 					m_move.x = 0.0f;
 					m_move.y += 100.0f;
 					m_Goalflag = true;
 					m_Jump = true;
 				}
-				//下から当たった時
-				if (pos.y + PLAYERCOLL >= c3DGoal->GetPos().y - PLAYERCOLL
-					&& m_PosOld.y + PLAYERCOLL < c3DGoal->GetPos().y - PLAYERCOLL
-					&& pos.x + PLAYERCOLL >= c3DGoal->GetPos().x - PLAYERCOLL
-					&& pos.x - PLAYERCOLL <= c3DGoal->GetPos().x + PLAYERCOLL
-					&& pos.z + PLAYERCOLL >= c3DGoal->GetPos().z - PLAYERCOLL
-					&& pos.z - PLAYERCOLL <= c3DGoal->GetPos().z + PLAYERCOLL)
-				{
-					m_move.x = 0.0f;
-					m_move.y += 2.2f;
-					m_Goalflag = true;
-				}
-				//右と当たった時
-				if (pos.z + PLAYERCOLL >= c3DGoal->GetPos().z - PLAYERCOLL
-					&& pos.z - PLAYERCOLL <= c3DGoal->GetPos().z + PLAYERCOLL
-					&& m_PosOld.x - PLAYERCOLL > c3DGoal->GetPos().x + PLAYERCOLL
-					&& pos.x - PLAYERCOLL <= c3DGoal->GetPos().x + PLAYERCOLL
-					&& pos.y + PLAYERCOLL >= c3DGoal->GetPos().y - PLAYERCOLL
-					&& pos.y - PLAYERCOLL <= c3DGoal->GetPos().y + PLAYERCOLL)
-				{
-					m_move.x = 0.0f;
-					m_move.y += 2.2f;
-					m_Goalflag = true;
-				}
-
-				//左と当たった時
-				if (pos.z + PLAYERCOLL >= c3DGoal->GetPos().z - PLAYERCOLL
-					&& pos.z - PLAYERCOLL <= c3DGoal->GetPos().z - PLAYERCOLL
-					&& m_PosOld.x + PLAYERCOLL < c3DGoal->GetPos().x + PLAYERCOLL
-					&& pos.x + PLAYERCOLL >= c3DGoal->GetPos().x - PLAYERCOLL
-					&& pos.y + PLAYERCOLL >= c3DGoal->GetPos().y - PLAYERCOLL
-					&& pos.y - PLAYERCOLL <= c3DGoal->GetPos().y + PLAYERCOLL)
-				{
-					m_move.x = 0.0f;
-					m_move.y += 2.2f;
-					m_Goalflag = true;
-				}
 			}
-			//アイテムの当たり判定
+			//アイテムとの判定
 			else if (type == CObject::TYPE::ITEM)
 			{
 				CItem* pItem = (CItem*)pObj;
 				pItem->GetPos();
 
-				bool bHit = false;
-				if (pos.y - PLAYERCOLL <= pItem->GetPos().y + PLAYERCOLL
-					&& m_PosOld.y - PLAYERCOLL > pItem->GetPos().y + PLAYERCOLL
-					&& pos.x + PLAYERCOLL >= pItem->GetPos().x - PLAYERCOLL
-					&& pos.x - PLAYERCOLL <= pItem->GetPos().x + PLAYERCOLL
-					&& pos.z + PLAYERCOLL >= pItem->GetPos().z - PLAYERCOLL
-					&& pos.z - PLAYERCOLL <= pItem->GetPos().z + PLAYERCOLL)
+				CCollisionDir dir_goal = CCollision::CheckRectCollision(pos, GetSize(), pItem->GetPos(), pItem->GetSize());
+				if (dir_goal != CCollisionDir::NONE)
 				{
-					bHit = true;
-				}
-				//下から当たった時
-				if (pos.y + PLAYERCOLL >= pItem->GetPos().y - PLAYERCOLL
-					&& m_PosOld.y + PLAYERCOLL < pItem->GetPos().y - PLAYERCOLL
-					&& pos.x + PLAYERCOLL >= pItem->GetPos().x - PLAYERCOLL
-					&& pos.x - PLAYERCOLL <= pItem->GetPos().x + PLAYERCOLL
-					&& pos.z + PLAYERCOLL >= pItem->GetPos().z - PLAYERCOLL
-					&& pos.z - PLAYERCOLL <= pItem->GetPos().z + PLAYERCOLL)
-				{
-					bHit = true;
-				}
-				//右と当たった時
-				if (pos.z + PLAYERCOLL >= pItem->GetPos().z - PLAYERCOLL
-					&& pos.z - PLAYERCOLL <= pItem->GetPos().z + PLAYERCOLL
-					&& m_PosOld.x - PLAYERCOLL > pItem->GetPos().x + PLAYERCOLL
-					&& pos.x - PLAYERCOLL <= pItem->GetPos().x + PLAYERCOLL
-					&& pos.y + PLAYERCOLL >= pItem->GetPos().y - PLAYERCOLL
-					&& pos.y - PLAYERCOLL <= pItem->GetPos().y + PLAYERCOLL)
-				{
-					bHit = true;
-				}
-
-				//左と当たった時
-				if (pos.z + PLAYERCOLL >= pItem->GetPos().z - PLAYERCOLL
-					&& pos.z - PLAYERCOLL <= pItem->GetPos().z + PLAYERCOLL
-					&& m_PosOld.x + PLAYERCOLL < pItem->GetPos().x - PLAYERCOLL
-					&& pos.x + PLAYERCOLL >= pItem->GetPos().x - PLAYERCOLL
-					&& pos.y + PLAYERCOLL >= pItem->GetPos().y - PLAYERCOLL
-					&& pos.y - PLAYERCOLL <= pItem->GetPos().y + PLAYERCOLL)
-				{
-					bHit = true;
-				}
-
-				//当たったら
-				if (bHit)
-				{
+					//アイテムも方向関係なく触れた瞬間効果が適用される
 					m_Itemflag = true;
 					m_pSound_Player->PlaySound(CSound::SOUND_LABEL_POWERUP);
 					pItem->Uninit();
 				}
-
 			}
 		}
 	}
 
-	
 	return pos;
-
 }
 
 
@@ -535,12 +374,10 @@ void CPlayer::Unload()
 	}
 }
 
-
 void CPlayer::SetPlayerType(TYPEPLAYER type)
 {
 	m_TypePlayer = type;
 }
-
 
 void CPlayer::SetState_Block(PLAYER_BLOCK_ST state_B)
 {
@@ -564,6 +401,7 @@ CPlayer::PLAYER_BLOCK_ST CPlayer::GetState_Block()
 // 
 //=======================================================================
 
+//初期化
 HRESULT CPlayer1::Init()
 {
 	CPlayer::Init();
@@ -571,9 +409,11 @@ HRESULT CPlayer1::Init()
 
 	return S_OK;
 }
+
+//更新処理
 void CPlayer1::Update()
 {
-
+	//アイテム使用時ジャンプ力上昇
 	if (m_Itemflag == true)
 	{
 		m_jumpPower = JUMP_INC * JUMP_INC_ITEMUSE;
@@ -583,9 +423,10 @@ void CPlayer1::Update()
 		m_jumpPower = JUMP_INC;
 	}
 
+	//アビリティ発動時フラグ
 	if (m_IsAbilityActive)
 	{
-		ApplyMovementModifier();
+		AbirityMoveflag();
 	}
 	
 	if (m_PlayerState == ALIVE && m_pos.y - 50.0f < 0.0f)
@@ -595,10 +436,12 @@ void CPlayer1::Update()
 	CPlayer::Update();
 }
 
+//描画処理
 void CPlayer1::Draw()
 {
 	CPlayer::Draw();
-	if (m_IsAbilityActive || m_Itemflag == true)
+	//アビリティ発動時見た目を変える
+	if (m_IsAbilityActive)
 	{
 		//プレイヤー1（アビリティ発動時）
 		BindMesh(m_pMesh_Player[PLAYER_1_N_MAG], m_pBuffMat_Player[PLAYER_1_N_MAG], m_dwNumMat_Player[PLAYER_1_N_MAG], m_pMaterial_Player, m_pTexture_Player[0]);
@@ -608,6 +451,7 @@ void CPlayer1::Draw()
 		//プレイヤー1（通常時）
 		BindMesh(m_pMesh_Player[PLAYER_1_N_NOM], m_pBuffMat_Player[PLAYER_1_N_NOM], m_dwNumMat_Player[PLAYER_1_N_NOM], m_pMaterial_Player, m_pTexture_Player[0]);
 	}
+
 }
 
 //生成
@@ -620,7 +464,6 @@ CPlayer1* CPlayer1::Create(D3DXVECTOR3 pos)
 		pPlayer1->Setpos(pos);
 		pPlayer1->SetPlayerType(TYPEPLAYER::PLAYER_1);
 	}
-	
 
 	for (int nCntmodel = 0; nCntmodel < 3; nCntmodel++)
 	{
@@ -643,10 +486,8 @@ CPlayer1* CPlayer1::Create(D3DXVECTOR3 pos)
 
 
 //プレイヤー1のフラグ管理
-void CPlayer1::ApplyMovementModifier()
+void CPlayer1::AbirityMoveflag()
 {
-
-	
 	switch (m_PlayerState_Block)
 	{
 	case STATE_S_BLOCK:
@@ -662,13 +503,13 @@ void CPlayer1::ApplyMovementModifier()
 		break;
 	}
 	default:
-
-		m_jumpPower = JUMP_INC;
+		if (m_Itemflag != true)
+		{
+			m_jumpPower = JUMP_INC;
+		}
 		break;
 	}
 }
-
-
 
 //=======================================================================
 //
@@ -689,7 +530,7 @@ HRESULT CPlayer2::Init()
 //更新処理
 void CPlayer2::Update()
 {
-	
+	//アイテム使用時ジャンプ力上昇
 	if (m_Itemflag == true)
 	{
 		m_jumpPower = JUMP_INC * JUMP_INC_ITEMUSE;
@@ -698,9 +539,11 @@ void CPlayer2::Update()
 	{
 		m_jumpPower = JUMP_INC;
 	}
+
+	//アビリティ発動時のフラグ
 	if (m_IsAbilityActive)
 	{
-		ApplyMovementModifier();
+		AbirityMoveflag();
 	}
 	
 	
@@ -715,7 +558,8 @@ void CPlayer2::Update()
 void CPlayer2::Draw()
 {
 	CPlayer::Draw();
-	if (m_IsAbilityActive|| m_Itemflag == true)
+	//アビリティ発動時見た目を変える
+	if (m_IsAbilityActive)
 	{
 		//プレイヤー2（アビリティ発動時）	
 		BindMesh(m_pMesh_Player[PLAYER_2_S_MAG], m_pBuffMat_Player[PLAYER_2_S_MAG], m_dwNumMat_Player[PLAYER_2_S_MAG],	m_pMaterial_Player, m_pTexture_Player[0]);
@@ -754,11 +598,9 @@ CPlayer2* CPlayer2::Create(D3DXVECTOR3 pos)
 	return pPlayer2;
 }
 
-
 //プレイヤー2のフラグ管理
-void CPlayer2::ApplyMovementModifier()
+void CPlayer2::AbirityMoveflag()
 {
-
 
 	switch (m_PlayerState_Block)
 	{
@@ -775,7 +617,11 @@ void CPlayer2::ApplyMovementModifier()
 		break;
 	}
 	default:
-		m_jumpPower = JUMP_INC;
+
+		if (m_Itemflag != true)
+		{
+			m_jumpPower = JUMP_INC;
+		}
 		break;
 	}
 }

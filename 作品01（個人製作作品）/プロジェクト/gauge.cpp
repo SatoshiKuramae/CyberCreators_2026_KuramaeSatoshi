@@ -1,10 +1,10 @@
-
 //===============================================================================
 //
-//ゲージフレーム
+//ゲージ
 //Gauge.cpp
 // Author:Satoshi Kuramae
 //===============================================================================
+
 #include "main.h"
 #include "manager.h"
 #include "texture.h"
@@ -32,7 +32,6 @@ HRESULT CGauge::Init()
 
 	m_pTextureGauge = pTex->Regist("data\\texture\\gauge.png");
 
-
 	CObject2D::BindTexture(pTex->GetAddress(m_pTextureGauge), D3DXVECTOR2(1, 1));
 
 	CObject2D::Init();
@@ -50,7 +49,7 @@ void CGauge::Uninit()
 //更新処理(頂点バッファの更新)
 void CGauge::Update()
 {
-	// アビリティゲージの値を取得（例: 0～100）
+	// アビリティゲージの値を取得
 	float gauge = CManager::GetGameProgress()->GetAbilityGauge();
 
 	// 最大値で割って-1.0～1.0に変換
@@ -73,18 +72,17 @@ CGauge* CGauge::Create(D3DXVECTOR3 pos)
 {
 	CGauge* pCGauge = new CGauge;
 	pCGauge->Setpos(pos);
-	pCGauge->SetParam(420.0f, 100.0f);
+	pCGauge->SetParam(GAUGESIZE_X, GAUGESIZE_Y);
 	pCGauge->Init();
 	pCGauge->SetAnim(0.0f, 1.0f);
 
 	return pCGauge;
 }
 
-
+//ゲージ更新
 void CGauge::SetRate(float rate)
 {
-	// rate は 0.0f ～ 1.0f の値にする（例: ゲージ50% → 0.5f）
-
+	// rate は 0.0f ～ 1.0f の値にする（ゲージ50% → 0.5f）
 	if (rate < -1.0f) {
 		rate = -1.0f;
 	}

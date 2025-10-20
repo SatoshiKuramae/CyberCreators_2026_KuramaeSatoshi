@@ -36,7 +36,7 @@ HRESULT CTutorialUI::Init()
 
 	m_pTextureTutorial[0] = pTex->Regist("data\\texture\\tutorial01.png");
 	m_pTextureTutorial[1] = pTex->Regist("data\\texture\\tutorial02.png");
-
+	m_pTextureTutorial[2] = pTex->Regist("data\\texture\\tutorial03.png");
 	m_pSound_TutorialUI = CManager::GetSound();
 
 	m_pSound_TutorialUI->PlaySound(CSound::SOUND_LABEL_BGM_01);
@@ -70,9 +70,9 @@ void CTutorialUI::Update()
 	{
 		m_tutorialcnt--;
 	}
-	if (m_tutorialcnt > 1)
+	if (m_tutorialcnt > 2)
 	{
-		m_tutorialcnt = 1;
+		m_tutorialcnt = 2;
 	}
 	else if (m_tutorialcnt < 0)
 	{
@@ -80,7 +80,7 @@ void CTutorialUI::Update()
 	}
 	CObject2D::BindTexture(pTex->GetAddress(m_pTextureTutorial[m_tutorialcnt]), D3DXVECTOR2(1, 1));
 	
-	if (m_tutorialcnt && pJoypad->GetJoypadTrigger(CInputGamepad::JOYKEY_START) == true)
+	if (m_tutorialcnt && pJoypad->GetJoypadTrigger(CInputGamepad::JOYKEY_START) == true|| pKeyboard->GetKeyboardTrigger(DIK_1) == true)
 	{
 		m_pSound_TutorialUI->PlaySound(CSound::SOUND_LABEL_CLICK);
 

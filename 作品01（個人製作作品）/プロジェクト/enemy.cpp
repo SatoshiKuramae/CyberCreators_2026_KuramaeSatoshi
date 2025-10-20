@@ -7,10 +7,11 @@
 #include "main.h"
 #include "manager.h"
 #include "input.h"
-#include "bullet.h"
+
 #include "block.h"
 LPDIRECT3DTEXTURE9 CEnemy::m_pTexture = nullptr;
 D3DXVECTOR3 CEnemy::m_PosOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
 //コンストラクタ
 CEnemy::CEnemy(int nPriority) :CObject2D(nPriority)
 {

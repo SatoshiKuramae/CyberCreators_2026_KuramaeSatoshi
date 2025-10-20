@@ -11,11 +11,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-
-constexpr float  CAMERALENGTH_Y(2500.0f);
-constexpr float  CAMERALENGTH_Z(2500.0f);
-constexpr float  CAMERALENGTH_TITLE(1000.0f);
-constexpr float  POSV_INC_Y(200.0f);
 //コンストラクタ
 CCamera::CCamera()
 {
@@ -34,11 +29,13 @@ HRESULT CCamera::Init()
 	m_TargetPosV.y = CAMERAPOS_V_Y;
 	m_TargetPosV.z = CAMERAPOS_V_Z;
 	m_flattery = true;
-	CCamera::m_posV = D3DXVECTOR3(0.0f, 500.0f, 0.0f);
+	CCamera::m_posV = D3DXVECTOR3(0.0f, POSV_Y, 0.0f);
 	CCamera::m_posR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	CCamera::m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 	CCamera::m_rot = D3DXVECTOR3(30.0f, 0.0f, 0.0f);
 	m_AveragePlayer_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+
 	return S_OK;
 }
 
@@ -183,7 +180,7 @@ void CCamera::Update()
 			CPlayer* pPlayer = (CPlayer*)pObj;
 			pPlayer->GetPos();
 
-			m_posR.y = pPlayer->GetPos().y + 500.0f;
+
 			//種類の取得
 			CObject::TYPE type = pObj->GetType();
 
@@ -197,6 +194,7 @@ void CCamera::Update()
 			}
 		}
 	}
+	//タイトルシーンのカメラ
 	if (pScene->GetScene() == CScene::MODE_TITLE)
 	{
 		m_AveragePlayer_pos = pos1 + pos2;
@@ -213,15 +211,13 @@ void CCamera::Update()
 		m_AveragePlayer_pos /= 2;
 		m_posR.x = m_AveragePlayer_pos.x;
 		m_posR.y = m_AveragePlayer_pos.y;
-		m_posV.x = sinf(m_rot.y + D3DX_PI) * sqrtf(CAMERALENGTH_Y * CAMERALENGTH_Y + CAMERALENGTH_Z * CAMERALENGTH_Z) / 2+m_AveragePlayer_pos.x;
-		m_posV.z = cosf(m_rot.y + D3DX_PI) * sqrtf(CAMERALENGTH_Y * CAMERALENGTH_Y + CAMERALENGTH_Z * CAMERALENGTH_Z) / 2+m_AveragePlayer_pos.z;
+		m_posV.x = sinf(m_rot.y + D3DX_PI) * sqrtf(CAMERALENGTH_Y * CAMERALENGTH_Y + CAMERALENGTH_Z * CAMERALENGTH_Z) / 2 + m_AveragePlayer_pos.x;
+		m_posV.z = cosf(m_rot.y + D3DX_PI) * sqrtf(CAMERALENGTH_Y * CAMERALENGTH_Y + CAMERALENGTH_Z * CAMERALENGTH_Z) / 2 + m_AveragePlayer_pos.z;
 		m_posV.y = m_AveragePlayer_pos.y + POSV_INC_Y;
 	}
-	
-	
-	
 }
 
+//カメラの振動
 void CCamera::SetQuake(int quakeflame, float quakesize)
 {
 	m_QuakeFlame = quakeflame;

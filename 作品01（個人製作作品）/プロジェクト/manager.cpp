@@ -12,7 +12,6 @@
 #include "bg.h"
 #include "manager.h"
 #include "input.h"
-#include "bullet.h"
 #include "explosion.h"
 #include "enemy.h"
 #include "block.h"
@@ -97,7 +96,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	CBlock::Load();
 	CEnemy::Load();
 	CExplosion::Load();
-	CBullet::Load();
+
 	CFloor::Load();
 
 	//最初のシーンの設定
@@ -116,7 +115,7 @@ void CManager::Uninit()
 	CBackBlock::Unload();
 	CEnemy::Unload();
 	CBlock::Unload();
-	CBullet::Unload();
+
 	CExplosion::Unload();
 	CFloor::Unload();
 	
@@ -166,6 +165,7 @@ void CManager::SetMode(CScene::MODE mode)
 		delete m_pScene;
 		m_pScene = nullptr;
 	}
+	//タイトルシーンになったらステータスをリセットする
 	if (mode == CScene::MODE::MODE_TITLE)
 	{
 		m_pGameState->Reset();

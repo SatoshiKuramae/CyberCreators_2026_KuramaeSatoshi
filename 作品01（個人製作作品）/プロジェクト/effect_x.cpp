@@ -2,6 +2,7 @@
 //
 //effect_xcpp
 /// Author:Satoshi Kuramae
+//
 //===============================================================================
 #include "effect_x.h"
 #include "manager.h"
@@ -42,7 +43,6 @@ HRESULT CEffect_X::Init()
 	m_pBuffMat_Effect = pModel->GetAddress(nIdx).m_Buff_Model;
 	m_pMesh_Effect = pModel->GetAddress(nIdx).m_Mesh_Model;
 	
-
 	CObjectX::Init();
 	return S_OK;
 }
@@ -83,7 +83,6 @@ CEffect_X* CEffect_X::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char* filen
 	pEffect_X = new CEffect_X;
 	pEffect_X->Init();
 	
-
 	pEffect_X->CObjectX::GetPos() = pos;
 	pEffect_X->CObjectX::GetRot() = rot;
 

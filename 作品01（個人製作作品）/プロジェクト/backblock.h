@@ -12,7 +12,7 @@
 #define NUMBACKBLOCKTYPE (5)
 
 
-//3Dオブジェクトクラス
+//背景に生成するブロック
 class CBackBlock : public CObjectX
 {
 public:

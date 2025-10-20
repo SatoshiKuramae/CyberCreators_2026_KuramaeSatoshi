@@ -15,13 +15,13 @@ CNumber::CNumber(int nPriority) :CObject2D(nPriority)
 	m_Texpos_MIN = 0;
 	m_Texpos_MAX = 0;
 }
+
 // デストラクタ
 CNumber::~CNumber()
 {
 
 }
-
-
+//初期化処理
 HRESULT CNumber::Init()
 {
 	CTexture* pTex = CManager::GetTexture();
@@ -33,21 +33,25 @@ HRESULT CNumber::Init()
 	return S_OK;
 }
 
+//終了処理
 void CNumber::Uninit()
 {
 	CObject2D::Uninit();
 }
 
+//描画処理
 void CNumber::Draw()
 {
 	CObject2D::Draw();
 }
 
+//更新処理
 void CNumber::Update()
 {
 	CObject2D::Update();
 }
 
+//生成
 CNumber* CNumber::Create(D3DXVECTOR3 pos, D3DXVECTOR2 size)
 {
 	CNumber* pNumber = new CNumber;
@@ -58,6 +62,7 @@ CNumber* CNumber::Create(D3DXVECTOR3 pos, D3DXVECTOR2 size)
 	return pNumber;
 }
 
+//最初のテクスチャ座標設定
 void CNumber::Setnumber(float m_Texpos_MIN, float m_Texpos_MAX)
 {
 	CObject2D::SetAnim(m_Texpos_MIN, m_Texpos_MAX);

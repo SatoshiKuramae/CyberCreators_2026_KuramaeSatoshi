@@ -7,6 +7,9 @@
 #include "object2D.h"
 #pragma once
 
+constexpr float GAUGESIZE_X = 420.0f;
+constexpr float GAUGESIZE_Y = 100.0f;
+
 //ゲージクラス
 class CGauge :public CObject2D
 {

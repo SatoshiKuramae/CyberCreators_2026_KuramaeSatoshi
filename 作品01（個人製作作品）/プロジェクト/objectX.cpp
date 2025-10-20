@@ -88,28 +88,31 @@ void CObjectX::Draw()
 
 	for (int nCntMat = 0; nCntMat < (int)m_dwNumMat; nCntMat++)
 	{
-		//マテリアルデータへのポインタを取得
 		m_pMaterial = (D3DXMATERIAL*)m_pBuffMat->GetBufferPointer();
 
-		//マテリアルの設定
-		pDevice->SetMaterial(&m_pMaterial[nCntMat].MatD3D);
+		D3DMATERIAL9 mat = m_pMaterial[nCntMat].MatD3D;
 
+		// マテリアルのDiffuse色をSetColorで上書き（必要に応じて乗算）
+		mat.Diffuse.r *= m_diffuseColor.r;
+		mat.Diffuse.g *= m_diffuseColor.g;
+		mat.Diffuse.b *= m_diffuseColor.b;
+		mat.Diffuse.a *= m_diffuseColor.a;
+
+		// アルファ値にも注意（透明にならないように）
+		mat.Ambient = mat.Diffuse;
+
+		pDevice->SetMaterial(&mat);
+
+		// テクスチャ設定
 		if (m_pMaterial[nCntMat].pTextureFilename != nullptr)
-		{
-			//テクスチャの設定
 			pDevice->SetTexture(0, m_pTexture[nCntMat]);
-		}
-
 		else
-		{
-			//テクスチャの設定
-			pDevice->SetTexture(0, NULL);
-		}
-		
+			pDevice->SetTexture(0, nullptr);
 
-		//モデル（パーツ）の描画
 		m_pMesh->DrawSubset(nCntMat);
 	}
+
+	
 	
 	//保存していたマテリアルを戻す
 	pDevice->SetMaterial(&matDef);

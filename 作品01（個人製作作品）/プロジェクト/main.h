@@ -38,12 +38,8 @@ constexpr float MAXPOS_X(1280.0f);
 constexpr float MAXPOS_Y(720.0f);
 constexpr float MINPOS(0.0f);
 constexpr float PLAYER_SPEED(18.0f);
-constexpr float BLOCK_X(80.0f);
-constexpr float BLOCK_Y(80.0f);
-constexpr float PLAYERCOLL(40.0f);
-constexpr float BLOCKCOLLISION_X(BLOCK_X - 5.0f);
-constexpr float BLOCKCOLLISION_Y(BLOCK_X - 5.0f);
-constexpr float RESETPOS((BLOCK_X + PLAYERCOLL) + 0.1f);
+
+
 constexpr float CAMERAPOS_V_Y(400.0f);
 constexpr float CAMERAPOS_V_Z(1200.0f);
 constexpr int NUM_MODEL(15);

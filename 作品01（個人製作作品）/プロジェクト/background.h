@@ -1,6 +1,6 @@
 //============================================================
 //
-//background.h
+//Cursor.h
 //
 //Author Kuramaesatoshi
 //============================================================
@@ -10,9 +10,18 @@
 #include "object2D.h"
 #include "stageselect.h"
 
+static const D3DXVECTOR3 CURSORPOS_STAGE1(140.0f, 295.0f, 0.0f);
+static const D3DXVECTOR3 CURSORPOS_STAGE2(385.0f, 295.0f, 0.0f);
+static const D3DXVECTOR3 CURSORPOS_STAGE3(650.0f, 295.0f, 0.0f);
+static const D3DXVECTOR3 CURSORPOS_STAGE4(895.0f, 295.0f, 0.0f);
+static const D3DXVECTOR3 CURSORPOS_STAGE5(1140.0f, 295.0f, 0.0f);
 
-//2Dオブジェクトクラス
-class CBackGraund : public CObject2D
+constexpr float CURSOR_ROT = 0.02f;
+constexpr float CURSORSIZE_X = 200.0f;
+constexpr float CURSORSIZE_Y = 200.0f;
+
+//カーソルクラス
+class CCursor : public CObject2D
 {
 public:
 	typedef struct
@@ -24,14 +33,14 @@ public:
 	}VERTEX_3D;
 
 
-	CBackGraund(int nPriority = 9);
-	~CBackGraund();
+	CCursor(int nPriority = 9);
+	~CCursor();
 
 	HRESULT Init();
 	void Uninit();
 	void Update();
 	void Draw();
-	static CBackGraund* Create(D3DXVECTOR3 pos);
+	static CCursor* Create(D3DXVECTOR3 pos);
 	static HRESULT Load();
 	static void Unload();
 

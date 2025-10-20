@@ -6,7 +6,6 @@
 //============================================================
 #include "object2D.h"
 #include "main.h"
-#include "object2D.h"
 #include "manager.h"
 //コンストラクタ
 CObject2D::CObject2D(int nPriority) :CObject(nPriority)
@@ -41,20 +40,20 @@ HRESULT CObject2D::Init()
 
 
 	//頂点座標の設定
-	m_pVtx[0].pos.x = m_posPolygon.x + sinf(m_rotPolygon.z - (D3DX_PI - m_fAnglePolygon)) * m_fLengthPolygon;
-	m_pVtx[0].pos.y = m_posPolygon.y + cosf(m_rotPolygon.z - (D3DX_PI - m_fAnglePolygon)) * m_fLengthPolygon;
+	m_pVtx[0].pos.x = m_pos.x + sinf(m_rotPolygon.z - (D3DX_PI - m_fAnglePolygon)) * m_fLengthPolygon;
+	m_pVtx[0].pos.y = m_pos.y + cosf(m_rotPolygon.z - (D3DX_PI - m_fAnglePolygon)) * m_fLengthPolygon;
 	m_pVtx[0].pos.z = 0.0f;
 
-	m_pVtx[1].pos.x = m_posPolygon.x + sinf(m_rotPolygon.z + (D3DX_PI - m_fAnglePolygon)) * m_fLengthPolygon;
-	m_pVtx[1].pos.y = m_posPolygon.y + cosf(m_rotPolygon.z + (D3DX_PI - m_fAnglePolygon)) * m_fLengthPolygon;
+	m_pVtx[1].pos.x = m_pos.x + sinf(m_rotPolygon.z + (D3DX_PI - m_fAnglePolygon)) * m_fLengthPolygon;
+	m_pVtx[1].pos.y = m_pos.y + cosf(m_rotPolygon.z + (D3DX_PI - m_fAnglePolygon)) * m_fLengthPolygon;
 	m_pVtx[1].pos.z = 0.0f;
 
-	m_pVtx[2].pos.x = m_posPolygon.x - sinf(m_rotPolygon.z + (D3DX_PI - m_fAnglePolygon)) * m_fLengthPolygon;
-	m_pVtx[2].pos.y = m_posPolygon.y - cosf(m_rotPolygon.z + (D3DX_PI - m_fAnglePolygon)) * m_fLengthPolygon;
+	m_pVtx[2].pos.x = m_pos.x - sinf(m_rotPolygon.z + (D3DX_PI - m_fAnglePolygon)) * m_fLengthPolygon;
+	m_pVtx[2].pos.y = m_pos.y - cosf(m_rotPolygon.z + (D3DX_PI - m_fAnglePolygon)) * m_fLengthPolygon;
 	m_pVtx[2].pos.z = 0.0f;
 
-	m_pVtx[3].pos.x = m_posPolygon.x - sinf(m_rotPolygon.z - (D3DX_PI - m_fAnglePolygon)) * m_fLengthPolygon;
-	m_pVtx[3].pos.y = m_posPolygon.y - cosf(m_rotPolygon.z - (D3DX_PI - m_fAnglePolygon)) * m_fLengthPolygon;
+	m_pVtx[3].pos.x = m_pos.x - sinf(m_rotPolygon.z - (D3DX_PI - m_fAnglePolygon)) * m_fLengthPolygon;
+	m_pVtx[3].pos.y = m_pos.y - cosf(m_rotPolygon.z - (D3DX_PI - m_fAnglePolygon)) * m_fLengthPolygon;
 	m_pVtx[3].pos.z = 0.0f;
 
 	m_pVtx[0].rhw = 1.0f;
@@ -106,24 +105,24 @@ void CObject2D::Update()
 
 	//頂点座標の設定
 
-	m_pVtx[0].pos.x = m_posPolygon.x + sinf(m_rotPolygon.z - (D3DX_PI - m_fAnglePolygon)) * m_fLengthPolygon;
-	m_pVtx[0].pos.y = m_posPolygon.y + cosf(m_rotPolygon.z - (D3DX_PI - m_fAnglePolygon)) * m_fLengthPolygon;
+	m_pVtx[0].pos.x = m_pos.x + sinf(m_rotPolygon.z - (D3DX_PI - m_fAnglePolygon)) * m_fLengthPolygon;
+	m_pVtx[0].pos.y = m_pos.y + cosf(m_rotPolygon.z - (D3DX_PI - m_fAnglePolygon)) * m_fLengthPolygon;
 	m_pVtx[0].pos.z = 0.0f;
 
-	m_pVtx[1].pos.x = m_posPolygon.x + sinf(m_rotPolygon.z + (D3DX_PI - m_fAnglePolygon)) * fLengthRight;
-	m_pVtx[1].pos.y = m_posPolygon.y + cosf(m_rotPolygon.z + (D3DX_PI - m_fAnglePolygon)) * m_fLengthPolygon;
+	m_pVtx[1].pos.x = m_pos.x + sinf(m_rotPolygon.z + (D3DX_PI - m_fAnglePolygon)) * fLengthRight;
+	m_pVtx[1].pos.y = m_pos.y + cosf(m_rotPolygon.z + (D3DX_PI - m_fAnglePolygon)) * m_fLengthPolygon;
 	m_pVtx[1].pos.z = 0.0f;
 
-	m_pVtx[2].pos.x = m_posPolygon.x - sinf(m_rotPolygon.z + (D3DX_PI - m_fAnglePolygon)) * m_fLengthPolygon;
-	m_pVtx[2].pos.y = m_posPolygon.y - cosf(m_rotPolygon.z + (D3DX_PI - m_fAnglePolygon)) * m_fLengthPolygon;
+	m_pVtx[2].pos.x = m_pos.x - sinf(m_rotPolygon.z + (D3DX_PI - m_fAnglePolygon)) * m_fLengthPolygon;
+	m_pVtx[2].pos.y = m_pos.y - cosf(m_rotPolygon.z + (D3DX_PI - m_fAnglePolygon)) * m_fLengthPolygon;
 	m_pVtx[2].pos.z = 0.0f;
 
-	m_pVtx[3].pos.x = m_posPolygon.x - sinf(m_rotPolygon.z - (D3DX_PI - m_fAnglePolygon)) * fLengthRight;
-	m_pVtx[3].pos.y = m_posPolygon.y - cosf(m_rotPolygon.z - (D3DX_PI - m_fAnglePolygon)) * m_fLengthPolygon;
+	m_pVtx[3].pos.x = m_pos.x - sinf(m_rotPolygon.z - (D3DX_PI - m_fAnglePolygon)) * fLengthRight;
+	m_pVtx[3].pos.y = m_pos.y - cosf(m_rotPolygon.z - (D3DX_PI - m_fAnglePolygon)) * m_fLengthPolygon;
 	m_pVtx[3].pos.z = 0.0f;
 
-	/*m_pVtx[1].pos.x = m_posPolygon.x + fLengthRight;
-	m_pVtx[3].pos.x = m_posPolygon.x + fLengthRight;*/
+	/*m_pVtx[1].pos.x = m_pos.x + fLengthRight;
+	m_pVtx[3].pos.x = m_pos.x + fLengthRight;*/
 
 	m_pVtx[0].tex = D3DXVECTOR2(m_MINTexpos_x, 0.0f);
 	m_pVtx[1].tex = D3DXVECTOR2(m_MAXTexpos_x, 0.0f);
@@ -180,7 +179,7 @@ void CObject2D::BindTexture(LPDIRECT3DTEXTURE9 pTex, D3DXVECTOR2 fTexpos)
 
 void CObject2D::Setpos(D3DXVECTOR3 pos)
 {
-	m_posPolygon = pos;
+	m_pos = pos;
 }
 
 void CObject2D::SetParam(float wide, float height)

@@ -23,8 +23,8 @@
     <ClCompile Include="background.cpp" />
     <ClCompile Include="bg.cpp" />
     <ClCompile Include="block.cpp" />
-    <ClCompile Include="bullet.cpp" />
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="collision.cpp" />
     <ClCompile Include="effect_x.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="explosion.cpp" />
@@ -47,6 +47,7 @@
     <ClCompile Include="object2D.cpp" />
     <ClCompile Include="object3D.cpp" />
     <ClCompile Include="objectX.cpp" />
+    <ClCompile Include="playablescene.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="playermanager.cpp" />
     <ClCompile Include="renderer.cpp" />
@@ -66,8 +67,8 @@
     <ClInclude Include="background.h" />
     <ClInclude Include="bg.h" />
     <ClInclude Include="block.h" />
-    <ClInclude Include="bullet.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="collision.h" />
     <ClInclude Include="effect_x.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="explosion.h" />
@@ -80,6 +81,7 @@
     <ClInclude Include="goal.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="item.h" />
+    <ClInclude Include="json.hpp" />
     <ClInclude Include="light.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="manager.h" />
@@ -90,6 +92,7 @@
     <ClInclude Include="object2D.h" />
     <ClInclude Include="object3D.h" />
     <ClInclude Include="objectX.h" />
+    <ClInclude Include="playablesene.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="playermanager.h" />
     <ClInclude Include="renderer.h" />

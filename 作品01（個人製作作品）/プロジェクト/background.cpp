@@ -12,20 +12,21 @@
 #include "background.h"
 #include "texture.h"
 #include "stageselect.h"
-int CBackGraund::m_pTexture = 0;
+int CCursor::m_pTexture = 0;
+
 //コンストラクタ
-CBackGraund::CBackGraund(int nPriority) :CObject2D(nPriority)
+CCursor::CCursor(int nPriority) :CObject2D(nPriority)
 {
 	m_DestPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 }
 // デストラクタ
-CBackGraund::~CBackGraund()
+CCursor::~CCursor()
 {
 
 }
 
 //初期化
-HRESULT CBackGraund::Init()
+HRESULT CCursor::Init()
 {
 	CTexture* pTex = CManager::GetTexture();
 
@@ -38,57 +39,57 @@ HRESULT CBackGraund::Init()
 }
 
 //描画処理
-void CBackGraund::Draw()
+void CCursor::Draw()
 {
 	CObject2D::Draw();
 }
 
 //更新処理
-void CBackGraund::Update()
+void CCursor::Update()
 {
 	if (CStageselect::GetStageSelect() == 1)
 	{
-		m_DestPos = (D3DXVECTOR3(140.0f, 295.0f,0.0f));
+		m_DestPos = CURSORPOS_STAGE1;
 	}
 	else if (CStageselect::GetStageSelect() == 2)
 	{
-		m_DestPos = (D3DXVECTOR3(385.0f, 295.0f, 0.0f));
+		m_DestPos = CURSORPOS_STAGE2;
 	}
 	else if (CStageselect::GetStageSelect() == 3)
 	{
-		m_DestPos = (D3DXVECTOR3(650.0f, 295.0f, 0.0f));
+		m_DestPos = CURSORPOS_STAGE3;
 	}
 	else if (CStageselect::GetStageSelect() == 4)
 	{
-		m_DestPos = (D3DXVECTOR3(895.0f, 295.0f, 0.0f));
+		m_DestPos = CURSORPOS_STAGE4;
 	}
 	else if (CStageselect::GetStageSelect() == 5)
 	{
-		m_DestPos = (D3DXVECTOR3(1140.0f, 295.0f, 0.0f));
+		m_DestPos = CURSORPOS_STAGE5;
 	}
 	
-	m_posPolygon = m_DestPos;
-	m_rotPolygon.z+=0.02f;
+	m_pos = m_DestPos;
+	m_rotPolygon.z+= CURSOR_ROT;
 
-	CBackGraund::Setpos(m_posPolygon);
+	CCursor::Setpos(m_pos);
 
 	CObject2D::Update();
 }
 
 //終了処理
-void CBackGraund::Uninit()
+void CCursor::Uninit()
 {
 	CObject2D::Uninit();
 	
 }
 
 //生成
-CBackGraund* CBackGraund::Create(D3DXVECTOR3 pos)
+CCursor* CCursor::Create(D3DXVECTOR3 pos)
 {
-	CBackGraund* pBackGround = new CBackGraund;
+	CCursor* pBackGround = new CCursor;
 
 	pBackGround->Setpos(pos);
-	pBackGround->SetParam(200.0f, 200.0f);
+	pBackGround->SetParam(CURSORSIZE_X, CURSORSIZE_Y);
 	pBackGround->Init();
 	pBackGround->SetAnim(0.0f, 1.0f);
 	return pBackGround;
@@ -96,13 +97,13 @@ CBackGraund* CBackGraund::Create(D3DXVECTOR3 pos)
 
 
 //ロード
-HRESULT CBackGraund::Load()
+HRESULT CCursor::Load()
 {
 	return S_OK;
 }
 
 //アンロード
-void CBackGraund::Unload()
+void CCursor::Unload()
 {
 	
 }

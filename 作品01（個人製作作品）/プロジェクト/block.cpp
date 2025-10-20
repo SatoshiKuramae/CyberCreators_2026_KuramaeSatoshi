@@ -197,6 +197,7 @@ CBlock* CBlock::Create(D3DXVECTOR3 pos,BLOCKTYPE BlockType)
 	pObject3D->Init();
 	pObject3D->Setpos(pos);
 	pObject3D->SetBlockType(BlockType);
+	pObject3D->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
 	for (int i = 0; i < NUMBLOCKTYPE; i++)
 	{

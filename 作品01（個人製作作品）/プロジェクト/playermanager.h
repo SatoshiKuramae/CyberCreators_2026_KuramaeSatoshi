@@ -2,12 +2,17 @@
 //
 //playermanager.h
 //Author Kuramaesatoshi
+// 
 //============================================================
 
 #include "player.h"
 #include <vector>
 #include "GameProgress.h"
 #pragma once
+
+constexpr float PLAYER_DEATH(50.0f);
+
+//プレイヤーマネージャークラス
 class CPlayerManager {
 public:
     enum class TYPEPLAYER {
@@ -15,6 +20,7 @@ public:
         PLAYER_2
         // 他にも必要に応じて追加可能
     };
+
     CPlayer* Create(TYPEPLAYER type, const D3DXVECTOR3& pos);
     void Init();
     void Update();
@@ -22,14 +28,14 @@ public:
     void Uninit();
 
     void SwitchPlayer(); // 操作プレイヤーの切り替え
-    CPlayer* GetCurrentPlayer();
+    
     CPlayer* GetPlayer1() const { return m_pPlayer1; }
     CPlayer* GetPlayer2() const { return m_pPlayer2; }
+
     void SetPlayer1(CPlayer* player) { m_pPlayer1 = player; }
     void SetPlayer2(CPlayer* player) { m_pPlayer2 = player; }
     void CheckDeath(CPlayer* player);
-    //void OnPlayerDeath();  // 残機処理
-    //int GetLife() const;
+
 
 private:
     CPlayer* m_pPlayer1 = nullptr;

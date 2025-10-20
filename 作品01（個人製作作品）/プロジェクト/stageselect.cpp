@@ -19,13 +19,21 @@ CSound* m_pSound_Select = nullptr;
 CStageselect* m_pTime_Select = nullptr;
 int CStageselect::m_nBesttime = 0;
 
-CStageselect::CStageselect() {
+//コンストラクタ
+CStageselect::CStageselect() 
+{
 	m_NowSelect = STAGETITLE;
 }
-CStageselect::~CStageselect() {
+
+//デストラクタ
+CStageselect::~CStageselect() 
+{
 
 }
-HRESULT CStageselect::Init() {
+
+//初期化処理
+HRESULT CStageselect::Init() 
+{
 	m_pSound_Select = CManager::GetSound();
 	m_pSound_Select->PlaySound(CSound::SOUND_LABEL_BGM_00);
 	
@@ -33,7 +41,7 @@ HRESULT CStageselect::Init() {
 	m_pBg = new CBg();
 	m_pBg->Init();
 	m_pBg->Create(D3DXVECTOR3(MAXPOS_X / 2, MAXPOS_Y / 2, 0.0f));
-	CBackGraund::Create(D3DXVECTOR3(MAXPOS_X / 2, MAXPOS_Y / 2, 0.0f));
+	CCursor::Create(D3DXVECTOR3(MAXPOS_X / 2, MAXPOS_Y / 2, 0.0f));
 	if (m_pTime_Select == nullptr)
 	{
 		m_pTime_Select = new CTime;
@@ -43,15 +51,20 @@ HRESULT CStageselect::Init() {
 	return S_OK;
 }
 
-void CStageselect::Uninit() {
-	if (m_pBg) {
+//終了処理
+void CStageselect::Uninit() 
+{
+	if (m_pBg) 
+	{
 		m_pBg->Uninit();
 	}
 	m_pSound_Select->StopSound();
 	m_pTime_Select->Uninit();
 }
 
-void CStageselect::Update() {
+//更新処理
+void CStageselect::Update() 
+{
 
 	CInputKeyboard* pKeyboard = CManager::GetKeyboard();
 	CInputGamepad* pJoypad = CManager::GetJoypad();
@@ -109,15 +122,19 @@ void CStageselect::Update() {
 	}
 }
 
-void CStageselect::Draw() {
+//描画処理
+void CStageselect::Draw() 
+{
 
 }
 
+//選択中のステージ番号取得
 int CStageselect::GetStageSelect()
 {
 	return m_NowSelect;
 }
 
+//ステージの最速記録取得
 int CStageselect::GetBestTime()
 {
 	return m_nBesttime;

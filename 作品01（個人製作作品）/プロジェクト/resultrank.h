@@ -12,6 +12,7 @@
 
 constexpr int RANK_DIFF = 10;
 constexpr float RANKUI_PARAM = 400.0f;
+
 //テクスチャ管理
 class CResultrank : public CObject2D
 {

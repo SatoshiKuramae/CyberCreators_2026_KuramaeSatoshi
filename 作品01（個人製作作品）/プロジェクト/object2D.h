@@ -30,20 +30,32 @@ public:
 	void Draw() override;
 	static CObject2D* Create();
 	void BindTexture(LPDIRECT3DTEXTURE9 pTex,D3DXVECTOR2 fTexpos);		//テクスチャ割り当て
-	D3DXVECTOR3& GetPos() { return m_posPolygon; }	//位置情報などを取得
 	void Setpos(D3DXVECTOR3 pos);
 	void SetMove(D3DXVECTOR3 move) { m_move = move; }	//移動量の設定
 	D3DXVECTOR3& GetMove() { return  m_move; }			//移動量の取得
 	void SetParam(float wide, float height);
 	void SetAnim(float m_Texpos_x_MIN, float m_Texpos_x_MAX);
 	void SetLengthPolygon(float length);
+
+	// CObject の純粋仮想関数を実装
+	D3DXVECTOR3 GetPos() const override { return m_pos; }
+	D3DXVECTOR3 GetSize() const override { return m_size; }
+	TYPE GetType() const override { return m_type; }
+
+	// モデル系の共通処理もここに
+	void SetPos(const D3DXVECTOR3& pos) { m_pos = pos; }
+	void SetSize(const D3DXVECTOR3& size) { m_size = size; }
+
 protected:
 	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;		//頂点バッファ
 	LPDIRECT3DTEXTURE9 m_pTexture;		//テクスチャ
 
-	D3DXVECTOR3 m_posPolygon;		//位置
 	D3DXVECTOR3 m_move;		//移動量
 	D3DXVECTOR3 m_rotPolygon;		//角度
+
+	D3DXVECTOR3 m_pos;
+	D3DXVECTOR3 m_size;
+	TYPE m_type = TYPE::NONE;
 
 	float m_fAnglePolygon;			//対角線の角度
 	float m_fLengthPolygon;			//対角線の長さ

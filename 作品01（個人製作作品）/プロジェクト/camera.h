@@ -10,6 +10,12 @@
 #include "main.h"
 #include "playermanager.h"
 constexpr float  CAMERASPEED(1.0f);
+constexpr float  CAMERALENGTH_Y(2500.0f);
+constexpr float  CAMERALENGTH_Z(2500.0f);
+constexpr float  CAMERALENGTH_TITLE(1000.0f);
+constexpr float  POSV_INC_Y(200.0f);
+constexpr float  POSV_Y(500.0f);
+
 //ÉJÉÅÉâ
 class CCamera
 {

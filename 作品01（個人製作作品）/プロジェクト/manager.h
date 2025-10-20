@@ -17,11 +17,13 @@
 #include "model.h"
 #include "sound.h"
 #include "GameProgress.h"
+
+//前方宣言
 class CCamera;
 class CLight;
 class CGameprogress;
 
-//レンダラークラス
+//マネージャークラス
 class CManager
 {
 public:

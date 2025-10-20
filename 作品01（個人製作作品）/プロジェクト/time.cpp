@@ -8,15 +8,17 @@
 #include "time.h"
 #include "object.h"
 #include "scene.h"
+#include "manager.h"
 
 CNumber* CTime::m_pNumber[NUMDIGIT] = {};
 int CTime::m_nResultTime = 0;
+
 //コンストラクタ
 CTime::CTime()
 {
 
 	m_nFrameTimer = 0;
-	m_nTimer = 0;
+	m_nTimer = 60;
 	for (int i = 0; i < NUMDIGIT; i++)
 	{
 		m_pNumber[i] = nullptr;
@@ -82,6 +84,10 @@ void CTime::Uninit()
 void CTime::Update()
 {
 	m_nFrameTimer++;
+	if (m_nTimer <= 0)
+	{
+		CManager::GetFade()->SetFade(CScene::MODE::MODE_RESULT_GAMEOVER);
+	}
 	SetTimer();
 }
 
@@ -93,7 +99,7 @@ void CTime::SetTimer()
 	if (m_nFrameTimer >= 60)
 	{
 		m_nFrameTimer = 0;
-		m_nTimer++;
+		m_nTimer--;
 	}
 	for (int nCntTimer = 0; nCntTimer < NUMDIGIT; nCntTimer++)
 	{//桁ごとに分解
@@ -106,7 +112,7 @@ void CTime::SetTimer()
 		fTimerMAX = fTimerMIN + 0.1f;
 		m_pNumber[i]->Setnumber(fTimerMIN, fTimerMAX);
 	}
-	m_nResultTime = m_nTimer;
+	m_nResultTime = 60 - m_nTimer;
 }
 
 //リザルト画面の記録

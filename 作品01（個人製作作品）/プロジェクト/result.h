@@ -10,6 +10,10 @@
 #include "sound.h"
 #include "resultrank.h"
 #include "bg.h"
+
+static const D3DXVECTOR3 CLEAR_RESULTUI_POS(MAXPOS_X / 2, MAXPOS_Y / 2, 0.0f);
+
+static const D3DXVECTOR3 RESULTRANK_UI_POS(MAXPOS_X / 2, MAXPOS_Y / 2 - 70.0f, 0.0f);
 class CResult : public CScene
 {
 public:

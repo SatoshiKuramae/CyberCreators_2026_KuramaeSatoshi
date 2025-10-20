@@ -12,8 +12,12 @@
 #include <iostream>
 #include <string>
 #include "texture.h"
-#define NUMPLAYER_DIGIT (1)
-
+constexpr int NUMPLAYER_DIGIT(1);
+constexpr float NUMPLAYER_UI_POS_X = (310.0f);
+constexpr float NUMPLAYER_UI_POS_Y = (650.0f);
+constexpr float NUMPLAYER_UI_SIZE_X = (50.0f);
+constexpr float NUMPLAYER_UI_SIZE_Y = (100.0f);
+constexpr float NUMPLAYER_UI_DIGITSIZE = (45.0f);
 //　TODO　プレイヤーの残機を取得し表示する
 class CNumplayer
 {

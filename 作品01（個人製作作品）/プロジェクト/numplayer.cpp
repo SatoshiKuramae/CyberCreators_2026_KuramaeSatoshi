@@ -1,6 +1,6 @@
 //=======================================================
 //
-//
+//プレイヤーの残機
 //CNumplayer.cpp
 //
 //Author Kuramaesatoshi
@@ -31,6 +31,7 @@ CNumplayer::~CNumplayer()
 	}
 }
 
+//初期化処理
 HRESULT CNumplayer::Init()
 {
 	m_nNumPlayer = 0;
@@ -42,7 +43,8 @@ HRESULT CNumplayer::Init()
 		{
 			if (m_pNumber[i] == nullptr)
 			{
-				m_pNumber[i] = CNumber::Create(D3DXVECTOR3(310.0f - (45 * i), 650.0f, 0.0f), D3DXVECTOR2(50.0f, 100.0f));
+				m_pNumber[i] = CNumber::Create(D3DXVECTOR3(NUMPLAYER_UI_POS_X - (NUMPLAYER_UI_DIGITSIZE * i),
+					NUMPLAYER_UI_POS_Y, 0.0f), D3DXVECTOR2(NUMPLAYER_UI_SIZE_X, NUMPLAYER_UI_SIZE_Y));
 			}
 		}
 	}
@@ -50,6 +52,7 @@ HRESULT CNumplayer::Init()
 	return S_OK;
 }
 
+//終了処理
 void CNumplayer::Uninit()
 {
 	for (int i = 0; i < NUMPLAYER_DIGIT; i++)
@@ -61,6 +64,7 @@ void CNumplayer::Uninit()
 	}
 }
 
+//更新処理
 void CNumplayer::Update()
 {
 	//プレイヤーマネージャーから自機数を取得
@@ -89,8 +93,6 @@ void CNumplayer::SetNumplayer()
 		fTimerMAX = fTimerMIN + 0.1f;
 		m_pNumber[i]->Setnumber(fTimerMIN, fTimerMAX);
 	}
-	
-
 }
 
 
